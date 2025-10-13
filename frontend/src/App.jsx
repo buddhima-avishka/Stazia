@@ -9,6 +9,7 @@ import Login from './pages/Login'
 import HotelProfile from './pages/HotelProfile'
 import MakeBookings from './pages/MakeBookings'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 function App() {
   return (
@@ -23,8 +24,9 @@ function App() {
         <Route path='/stays/:property' element={<Stays />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/HotelProfile' element={<HotelProfile />} />
-        <Route path='/MakeBookings/:docId' element={<MakeBookings />} />
+        <Route path='/MakeBookings/:stayId' element={<MakeBookings />} />
       </Routes>
+      <Footer/>
     </div>
   )
 }
