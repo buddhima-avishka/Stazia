@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
 
-function AllStaysHeader() {
+function AllStaysHeader({ onFiltersChange }) {
   const initialFilters = {
     singleBed: false,
     familySuite: false,
@@ -20,6 +20,10 @@ function AllStaysHeader() {
   function toggle(key) {
     setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
   }
+
+  React.useEffect(() => {
+    if (typeof onFiltersChange === 'function') onFiltersChange(filters);
+  }, [filters, onFiltersChange]);
 
   return (
     <div
@@ -75,10 +79,6 @@ function AllStaysHeader() {
                   <span className="text-sm">Double bed</span>
                 </label>
                 <label className="inline-flex items-center gap-2">
-                  <input type="checkbox" className="form-checkbox" checked={filters.doubleBed} onChange={() => toggle('doubleBed')} />
-                  <span className="text-sm">Double bed</span>
-                </label>
-                <label className="inline-flex items-center gap-2">
                   <input type="checkbox" className="form-checkbox" checked={filters.luxuryRoom} onChange={() => toggle('luxuryRoom')} />
                   <span className="text-sm">Luxury Room</span>
                 </label>
@@ -109,15 +109,33 @@ function AllStaysHeader() {
               <h4 className="font-medium mb-2">Sort By</h4>
               <div className="flex flex-col gap-2">
                 <label className="inline-flex items-center gap-2">
-                  <input type="checkbox" className="form-checkbox" checked={filters.sortLowHigh} onChange={() => toggle('sortLowHigh')} />
+                  <input
+                    type="radio"
+                    name="sort"
+                    className="form-radio"
+                    checked={filters.sortLowHigh}
+                    onChange={() => setFilters(prev => ({ ...prev, sortLowHigh: true, sortHighLow: false, newestFirst: false }))}
+                  />
                   <span className="text-sm">Price: Low to High</span>
                 </label>
                 <label className="inline-flex items-center gap-2">
-                  <input type="checkbox" className="form-checkbox" checked={filters.sortHighLow} onChange={() => toggle('sortHighLow')} />
+                  <input
+                    type="radio"
+                    name="sort"
+                    className="form-radio"
+                    checked={filters.sortHighLow}
+                    onChange={() => setFilters(prev => ({ ...prev, sortLowHigh: false, sortHighLow: true, newestFirst: false }))}
+                  />
                   <span className="text-sm">Price: High to Low</span>
                 </label>
                 <label className="inline-flex items-center gap-2">
-                  <input type="checkbox" className="form-checkbox" checked={filters.sortHighLow} onChange={() => toggle('sortHighLow')} />
+                  <input
+                    type="radio"
+                    name="sort"
+                    className="form-radio"
+                    checked={filters.newestFirst}
+                    onChange={() => setFilters(prev => ({ ...prev, sortLowHigh: false, sortHighLow: false, newestFirst: true }))}
+                  />
                   <span className="text-sm">Newest First</span>
                 </label>
               </div>
