@@ -1,10 +1,11 @@
-import React from 'react'
-import { stays } from '../assets/assets';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
 function TopDestonations() {
 
   const navigate = useNavigate() 
+  const {stays} = useContext(AppContext)
 
   const [stopScroll, setStopScroll] = React.useState(false);
 
@@ -42,7 +43,7 @@ function TopDestonations() {
                       <p className="text-black text-sm font-semibold mb-2 pl-2">{item.location}</p>
                       <p className="text-black text-sm font-semibold mb-2 pl-2">$ {item.cost}</p>
                       <div className="flex flex-col items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-all duration-300 absolute bottom-0 backdrop-blur-md left-0 w-full h-full bg-black/20 rounded-lg">
-                        <button onClick={()=>navigate(`/MakeBookings/${item._id}`)} className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-md">Visit Details</button>
+                        <button onClick={()=>navigate(`/make-bookings/${item._id}`)} className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-md">Visit Details</button>
                       </div>
                     </div>
         ))}
