@@ -25,7 +25,7 @@ function Header() {
         
 
         {/* Booking Form */}
-        <form className='bg-white text-gray-500 rounded-lg px-6 py-4  flex flex-col md:flex-row max-md:items-start gap-4 max-md:mx-auto'>
+        <form className='bg-white text-gray-500 rounded-lg px-6 py-4 flex flex-col md:flex-row max-md:items-start gap-6 max-md:mx-auto'>
 
             <div>
                 <div className='flex items-center gap-2'>
@@ -57,14 +57,19 @@ function Header() {
             </div>
 
             <div className='flex md:flex-col max-md:gap-2 max-md:items-center'>
-                <label htmlFor="guests">Guests</label>
+                <div className='flex items-center gap-2'>
+                    <img src={assets.guestsIcon} alt="" />
+                    <label htmlFor="guests">Guests</label>
+                </div>
                 <input min={1} max={4} id="guests" type="number" className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none  max-w-16" placeholder="0" />
             </div>
 
-            <button className='flex items-center justify-center gap-1 rounded-md bg-primary py-2 px-4 text-white my-auto cursor-pointer max-md:w-full max-md:py-1' >
-                <img src={assets.searchIcon} alt="" />
-                <span>Search</span>
-            </button>
+            <div className='flex items-center md:ml-4 md:mr-2'>
+                <button className='flex items-center justify-center gap-2 rounded-md bg-primary py-2 px-6 text-white cursor-pointer max-md:w-full hover:bg-primary/90 transition-all' >
+                    <img src={assets.searchIcon} alt="" />
+                    <span>Search</span>
+                </button>
+            </div>
         </form>
       </div>
 

@@ -24,6 +24,7 @@ function MakeBookingsHeader() {
           Discover the finest hotels from all over the world.
         </p>
 
+
       </div>
     </div>
   );
