@@ -20,7 +20,7 @@ function AboutHeader() {
             <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
               About Us
             </p>
-            <p className='text-white text-sm md:text-base'>Discover the finest hotels from all over the world.</p>
+            <p className='text-white text-sm md:text-base'>Welcome to Stazia, your trusted partner in discovering and booking the perfect stay. We’re passionate about making travel simple, enjoyable, and accessible for everyone. Whether you’re planning a quick getaway, a business trip, or a luxury vacation, we bring you a wide range of hotels, villas, and resorts — all in one place.</p>
             
           </div>
     

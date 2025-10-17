@@ -20,7 +20,7 @@ function ContactHeader() {
                 <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
                   Contact Us
                 </p>
-                <p className='text-white text-sm md:text-base'>Discover the finest hotels from all over the world.</p>
+                <p className='text-white text-sm md:text-base'>We’re here to help you every step of the way — from finding the perfect hotel to managing your bookings with ease. <br /> If you have any questions, feedback, or need support, feel free to reach out to us through any of the channels below.</p>
                 
               </div>
     </div>
