@@ -24,7 +24,7 @@ function App() {
         <Route path='/stays/:property' element={<Stays />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/HotelProfile' element={<HotelProfile />} />
-        <Route path='/MakeBookings/:stayId' element={<MakeBookings />} />
+        <Route path='/MakeBookings/:_id' element={<MakeBookings />} />
       </Routes>
       <Footer/>
     </div>
