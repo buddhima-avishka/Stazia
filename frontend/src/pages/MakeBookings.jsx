@@ -265,7 +265,17 @@ function MakeBookings() {
           {/* Location Section */}
           <div className='mb-8 mt-8'>
             <h2 className='text-2xl font-semibold text-gray-800 mb-4'>Location</h2>
-            <p className='text-gray-600 leading-relaxed'>{room.location}</p>
+            <iframe 
+              src={room.map} 
+              width="100%" 
+              height="450" 
+              style={{border:0}} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              className='rounded-lg mb-4'
+            ></iframe>
+            
           </div>
         </div>
       ) : (

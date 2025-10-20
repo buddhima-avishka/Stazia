@@ -150,19 +150,35 @@ export const cities = ["Kandy", "Galle", "Matara", "Colombo"];
 
 // Facility Icon
 export const facilityIcons = {
-    "Free WiFi": assets.freeWifiIcon,
-    "Free Breakfast": assets.freeBreakfastIcon,
-    "Room Service": assets.roomServiceIcon,
-    "Mountain View": assets.mountainIcon,
-    "Pool Access": assets.poolIcon,
+  "Free WiFi": assets.freeWifiIcon,
+  "Free Breakfast": assets.freeBreakfastIcon,
+  "Room Service": assets.roomServiceIcon,
+  "Mountain View": assets.mountainIcon,
+  "Pool Access": assets.poolIcon,
 };
 
 // For Room Details Page
 export const roomCommonData = [
-    { icon: assets.homeIcon, title: "Clean & Safe Stay", description: "A well-maintained and hygienic space just for you." },
-    { icon: assets.badgeIcon, title: "Enhanced Cleaning", description: "This host follows Staybnb's strict cleaning standards." },
-    { icon: assets.locationFilledIcon, title: "Excellent Location", description: "90% of guests rated the location 5 stars." },
-    { icon: assets.heartIcon, title: "Smooth Check-In", description: "100% of guests gave check-in a 5-star rating." },
+  {
+    icon: assets.homeIcon,
+    title: "Clean & Safe Stay",
+    description: "A well-maintained and hygienic space just for you.",
+  },
+  {
+    icon: assets.badgeIcon,
+    title: "Enhanced Cleaning",
+    description: "This host follows Staybnb's strict cleaning standards.",
+  },
+  {
+    icon: assets.locationFilledIcon,
+    title: "Excellent Location",
+    description: "90% of guests rated the location 5 stars.",
+  },
+  {
+    icon: assets.heartIcon,
+    title: "Smooth Check-In",
+    description: "100% of guests gave check-in a 5-star rating.",
+  },
 ];
 
 export const propertyType = [
@@ -200,6 +216,7 @@ export const stays = [
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "6000",
     location: "Kandy",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.4301079482!2d80.58458171395517!3d7.294543434442244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1760978323221!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: true,
   },
@@ -213,7 +230,8 @@ export const stays = [
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "4000",
-    location: "Kandy",
+    location: "Galle",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63480.84757330824!2d80.1707973113629!3d6.055889995994957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae173bb6932fce3%3A0x4a35b903f9c64c03!2sGalle!5e0!3m2!1sen!2slk!4v1760979971022!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: true,
   },
@@ -228,6 +246,7 @@ export const stays = [
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "8000",
     location: "Kandy",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.4301079482!2d80.58458171395517!3d7.294543434442244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1760978323221!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: false,
   },
@@ -242,6 +261,7 @@ export const stays = [
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "13000",
     location: "Kandy",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.4301079482!2d80.58458171395517!3d7.294543434442244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1760978323221!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: true,
   },
@@ -256,6 +276,7 @@ export const stays = [
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "14000",
     location: "Kandy",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.4301079482!2d80.58458171395517!3d7.294543434442244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1760978323221!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: false,
   },
@@ -270,6 +291,7 @@ export const stays = [
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "5000",
     location: "Kandy",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.4301079482!2d80.58458171395517!3d7.294543434442244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1760978323221!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: true,
   },
@@ -284,6 +306,7 @@ export const stays = [
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
     pricePerNight: "3500",
     location: "Kandy",
+    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.4301079482!2d80.58458171395517!3d7.294543434442244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1760978323221!5m2!1sen!2slk",
     rating: 4.9,
     isAvailable: false,
   },
