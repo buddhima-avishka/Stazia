@@ -10,6 +10,7 @@ import HotelProfile from './pages/HotelProfile'
 import MakeBookings from './pages/MakeBookings'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import MyProfile from './pages/MyProfile'
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path='/stays' element={<Stays />} />
         <Route path='/stays/:property' element={<Stays />}/>
         <Route path='/login' element={<Login />} />
-        <Route path='/HotelProfile' element={<HotelProfile />} />
+        <Route path='/MyProfile' element={<MyProfile />} />
         <Route path='/MakeBookings/:_id' element={<MakeBookings />} />
       </Routes>
       <Footer/>
