@@ -44,7 +44,7 @@ function Navbar() {
               </div>
             </div>
           </div>
-          : <button onClick={() => navigate('/register')} className='bg-primary text-white py-3 px-6 rounded-full font-light hidden md:block'>Create Account</button>
+          : <button onClick={() => navigate('/login')} className='bg-primary text-white py-3 px-6 rounded-full font-light hidden md:block'>Create Account</button>
         }
         
       </div>

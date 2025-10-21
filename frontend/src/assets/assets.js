@@ -70,6 +70,7 @@ import topHotel3 from "./topHotel3.png";
 import upload_area_png from "./upload_area.png";
 import upload_icon from "./upload_icon.png";
 import villas from "./villas.png";
+import regImage from "./regImage.jpg";
 
 export const assets = {
   // Icons
@@ -144,6 +145,7 @@ export const assets = {
   upload_area_png,
   upload_icon,
   villas,
+  regImage,
 };
 
 export const cities = ["Kandy", "Galle", "Matara", "Colombo"];
