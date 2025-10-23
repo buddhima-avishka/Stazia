@@ -11,7 +11,8 @@ import MakeBookings from './pages/MakeBookings'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import MyProfile from './pages/MyProfile'
-
+import MyBookings from './pages/MyBookings'
+ 
 function App() {
   return (
     <div className='mx-4 sm:mx-[10%]'>
@@ -20,7 +21,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
-        <Route path='/booking-requests' element={<BookingRequests />} />
+        <Route path='/MyBookings' element={<MyBookings />} />
         <Route path='/stays' element={<Stays />} />
         <Route path='/stays/:property' element={<Stays />}/>
         <Route path='/login' element={<Login />} />
