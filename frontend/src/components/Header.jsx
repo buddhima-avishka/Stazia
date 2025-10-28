@@ -3,6 +3,8 @@ import { assets } from '../assets/assets.js'
 import { cities } from '../assets/assets'
 
 function Header() {
+  const [showForm, setShowForm] = React.useState(false)
+
   return (
     <div 
       className='relative rounded-lg overflow-hidden min-h-[500px] md:min-h-[600px]'
@@ -54,8 +56,17 @@ function Header() {
         </div>
         
 
+        {/* Toggle Button for Mobile */}
+        <button 
+          onClick={() => setShowForm(!showForm)}
+          className='md:hidden flex items-center justify-center gap-2 rounded-md bg-primary py-2 px-6 text-white hover:bg-primary/90 transition-all w-full'
+        >
+          <img src={assets.searchIcon} alt="" />
+          <span>{showForm ? 'Hide Search' : 'Search Hotels'}</span>
+        </button>
+
         {/* Booking Form */}
-        <form className='bg-white text-gray-500 rounded-lg px-6 py-4 flex flex-col md:flex-row max-md:items-start gap-6 max-md:mx-auto'>
+        <form className={`bg-white text-gray-500 rounded-lg px-6 py-4 flex flex-col md:flex-row max-md:items-start gap-6 max-md:mx-auto ${showForm ? 'block' : 'hidden md:flex'}`}>
 
             <div>
                 <div className='flex items-center gap-2'>
@@ -105,11 +116,13 @@ function Header() {
       </div>
 
       {/* right side - bottom right corner */}
-      <div className='absolute bottom-0 right-0 z-10 max-w-md flex flex-col justify-end gap-3 p-6 md:p-10 lg:p-12 text-left'>
-        <p className='text-base md:text-lg text-white'>
-          We provide a variety of the best <br /> lodging accommodations for those <br /> of you who need it.
-        </p>
-        <p className='text-sm md:text-base text-white/90'>Don't worry about the quality of the service.</p>
+      <div className='absolute bottom-0 right-0 z-10 max-w-md flex flex-col justify-end gap-3 p-6 md:p-10 lg:p-12'>
+        <div className='border-l-4 border-primary pl-4 md:pl-6'>
+          <p className='text-base md:text-lg text-white'>
+            We provide a variety of the best <br /> lodging accommodations for those <br /> of you who need it.
+          </p>
+          <p className='text-sm md:text-base text-white/90'>Don't worry about the quality of the service.</p>
+        </div>
       </div>
 
     </div>

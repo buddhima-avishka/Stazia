@@ -3,7 +3,8 @@ import AllStaysHeader from '../components/AllStaysHeader'
 import { useParams } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import { assets, facilityIcons } from '../assets/assets';
 
 function Stays() {
 
@@ -65,21 +66,74 @@ function Stays() {
   return (
     <div>
       <AllStaysHeader onFiltersChange={setActiveFilters} />
-      <div>
-        <div className='pt-10 pb-10'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='pt-10 pb-10 flex flex-col gap-6'>
           {
             filterStay.map((item, index) => (
-                    <div className='w-56 mx-4 h-[20rem] relative group hover:scale-90 transition-all duration-300 flex flex-col bg-gray-200'>
-                      <img src={item.image} alt={item.name} className='w-full h-full object-cover rounded-lg'/>
-                      <p className="absolute top-2 left-2 text-black text-sm font-semibold mb-2 pl-2 pr-2 bg-white">{item.rating}</p>
-                      <p className="text-black text-sm font-semibold mb-2 pl-2">{item.name}</p>
-                      <p className="text-black text-sm font-semibold mb-2 pl-2">{item.location}</p>
-                      <p className="text-black text-sm font-semibold mb-2 pl-2">Rs. {item.pricePerNight}</p>
-                      <div className="flex flex-col items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-all duration-300 absolute bottom-0 backdrop-blur-md left-0 w-full h-full bg-black/20 rounded-lg">
-                        <button onClick={()=>navigate(`/MakeBookings/${item._id}`)} className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-md">Visit Details</button>
+              <React.Fragment key={index}>
+                <div className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-300'>
+                  {/* Image on Left */}
+                  <div className='md:w-1/4 h-48 md:h-56 relative group flex items-center justify-center bg-gray-100'>
+                    <img src={item.image} alt={item.name} className='w-full h-full object-cover rounded-lg'/>
+                    <div className="absolute top-3 left-3 bg-white px-3 py-1 rounded-md flex items-center gap-1">
+                      <img src={assets.starIconFilled} alt="star" className='w-4 h-4' />
+                      <span className="text-sm font-semibold">{item.rating}</span>
+                    </div>
+                  </div>
+
+                  {/* Details on Right */}
+                  <div className='md:w-3/4 p-4 sm:p-6 flex flex-col justify-between'>
+                  <div>
+                    <div className='flex justify-between items-start mb-2'>
+                      <h3 className="text-xl md:text-2xl font-semibold text-gray-800">{item.name}</h3>
+                      <div className='text-right'>
+                        <p className="text-2xl font-bold text-primary">Rs. {item.pricePerNight}</p>
+                        <p className="text-sm text-gray-500">per night</p>
                       </div>
                     </div>
-        ))
+
+                    <div className='flex items-center gap-2 mb-2'>
+                      <img src={assets.locationIcon} alt="location" className='w-4 h-4' />
+                      <p className="text-gray-600">{item.location}</p>
+                    </div>
+
+                    <div className='flex items-center gap-2 mb-3'>
+                      <img src={assets.homeIcon} alt="room" className='w-4 h-4' />
+                      <p className="text-gray-600">{item.roomType}</p>
+                    </div>
+
+                    {/* Amenities */}
+                    <div className='mb-4'>
+                      <p className='text-sm font-semibold text-gray-700 mb-2'>Amenities:</p>
+                      <div className='flex flex-wrap gap-3'>
+                        {item.amenities.map((amenity, idx) => (
+                          <div key={idx} className='flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md'>
+                            <img src={facilityIcons[amenity]} alt={amenity} className='w-4 h-4' />
+                            <span className='text-sm text-gray-700'>{amenity}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='flex items-center justify-between mt-4'>
+                    <span className='text-sm text-gray-500'>{item.property}</span>
+                    <button 
+                      onClick={() => navigate(`/MakeBookings/${item._id}`)} 
+                      className="bg-primary text-white font-semibold py-2 px-6 rounded-md hover:bg-primary/90 transition-all"
+                    >
+                      View More
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Horizontal Line - don't show after last item */}
+              {index < filterStay.length - 1 && (
+                <hr className='my-6 border-gray-200' />
+              )}
+            </React.Fragment>
+            ))
           }
         </div>
       </div>
