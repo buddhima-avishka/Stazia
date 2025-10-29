@@ -1,69 +1,95 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { assets } from '../assets/assets.js'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 function Navbar() {
 
-  const navigate = useNavigate();
+  const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'All Stays', path: '/stays' },
+        { name: 'About', path: '/about' },
+        { name: 'Contact', path: '/contact' },
+    ];
 
-  const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+    const navigate = useNavigate();
 
-  return (
-    <div className='flex justify-between items-center py-4 mb-5 border-b border-b-gray-300 text-sm'>
-      <img className='h-12 cursor-pointer' src={assets.logo} alt="Logo" />
-      <ul className='hidden md:flex items-start gap-6 font-medium'>
-        <NavLink to={'/'}>
-          <li className='py-1'>HOME</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
-        <NavLink to={'/stays'}>
-          <li className='py-1'>ALL STAYS</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
-        <NavLink to={'/about'}>
-          <li className='py-1'>ABOUT</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
-        <NavLink to={'/contact'}>
-          <li className='py-1'>CONTACT</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
-        </NavLink>
-      </ul>
-      <div className='flex items-center gap-4'>
-        {
-          token
-          ? <div className="flex items-center gap-2 cursor-pointer group relative">
-            <img className='w-8 rounded-full' src={assets.profile_pic} alt=''/>
-            <img className='w-2.5' src={assets.dropdown_icon} alt=''/>
-            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
-              <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
-                <p onClick={() => navigate('/MyProfile')} className='hover:text-black cursor-pointer'>My Profile</p>
-                <p onClick={() => navigate('/MyBookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
-                <p onClick={() => setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
-              </div>
-            </div>
-          </div>
-          : <button onClick={() => navigate('/login')} className='bg-primary text-white py-3 px-6 rounded-full font-light hidden md:block'>Create Account</button>
-        }
-        <img onClick={()=>setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
-        {/* Mobile Menu */}
-        <div className={`${showMenu ? 'fixed w-full' : 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all `}>
-          <div className='flex items-center justify-between px-5 py-6'>
-            <img className='w-12' src={assets.logo} alt="" />
-            <img className='w-7' onClick={()=>setShowMenu(false)} src={assets.cross_icon} alt="" />
-          </div>
-          <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-md font-medium'>
-            <NavLink onClick={()=>setShowMenu(false)} to={'/'}>HOME</NavLink>
-            <NavLink onClick={()=>setShowMenu(false)} to={'/stays'}>ALL STAYS</NavLink>
-            <NavLink onClick={()=>setShowMenu(false)} to={'/about'}>ABOUT</NavLink>
-            <NavLink onClick={()=>setShowMenu(false)} to={'/contact'}>CONTACT</NavLink>
-          </ul>
-        </div>
+    const [isScrolled, setIsScrolled] = React.useState(false);
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isVisible, setIsVisible] = React.useState(true);
+    const [lastScrollY, setLastScrollY] = React.useState(0);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            
+            // Hide navbar when scrolling down, show when scrolling up
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                setIsVisible(false); // Scrolling down
+            } else {
+                setIsVisible(true); // Scrolling up
+            }
+            
+            // Add background when scrolled
+            setIsScrolled(currentScrollY > 10);
+            setLastScrollY(currentScrollY);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
+
+    return (
         
-      </div>
-    </div>
-  )
+            
+            <nav className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${
+                isVisible ? 'translate-y-0' : '-translate-y-full'
+            } ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "bg-transparent py-4 md:py-6"}`}>
+
+                {/* Logo */}
+                <Link>
+                    <img src={assets.logo} alt="" className={`h-12 `}/>
+                </Link>
+
+                {/* Desktop Nav */}
+                <div className="hidden md:flex items-center gap-4 lg:gap-8">
+                    {navLinks.map((link, i) => (
+                        <a key={i} href={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
+                            {link.name}
+                            <div className='bg-primary h-0.5 w-0 group-hover:w-full transition-all duration-300' />
+                        </a>
+                    ))}
+                    
+                </div>
+
+                {/* Desktop Right */}
+                <div className="hidden md:flex items-center gap-4">
+                    <button onClick={() => navigate('/login')} className='bg-primary text-white py-3 px-6 rounded-full font-light hidden md:block'>Create Account</button>
+                </div>
+
+                {/* Mobile Menu Button */}
+                <div className="flex items-center gap-3 md:hidden">
+                    <img src={assets.menu_icon} alt="" className='h-6 cursor-pointer' onClick={() => setIsMenuOpen(true)} />
+                </div>
+
+                {/* Mobile Menu */}
+                <div className={`fixed items-center top-0 left-0 w-full h-screen bg-white text-base flex flex-col md:hidden items-start px-8 pt-8 gap-6 font-medium text-gray-800 transition-all duration-500 z-[60] ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                    <div className="flex items-center justify-between w-full mb-4">
+                        <img src={assets.logo} alt="" className='h-10' />
+                        <img src={assets.cross_icon} alt="" className='h-7 w-7 cursor-pointer' onClick={() => setIsMenuOpen(false)} />
+                    </div>
+
+                    {navLinks.map((link, i) => (
+                        <a key={i} href={link.path} onClick={() => setIsMenuOpen(false)} className="text-lg hover:text-primary transition-colors">
+                            {link.name.toUpperCase()}
+                        </a>
+                    ))}
+                </div>
+            </nav>
+        
+    );
+
+
+  
+
 }
 
 export default Navbar

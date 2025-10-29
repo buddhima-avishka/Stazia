@@ -7,7 +7,7 @@ function Header() {
 
   return (
     <div 
-      className='relative rounded-lg overflow-hidden min-h-[500px] md:min-h-[600px]'
+      className='relative items-start justify-center px-6 md:px-16 lg:px-24 xl:px-32 overflow-hidden h-screen px-6 md:px-16 lg:px-24 xl:px-32 '
       style={{
         backgroundImage: `url(${assets.header_img})`,
         backgroundSize: 'cover',
@@ -19,7 +19,7 @@ function Header() {
       <div className='absolute inset-0 bg-black/30'></div>
 
       {/* ----left side - top left corner---- */}
-      <div className='absolute top-0 left-0 z-10 max-w-xl flex flex-col items-start justify-start gap-4 p-6 md:p-10 lg:p-12'>
+      <div className='absolute top-0 left-0 z-10 max-w-xl flex flex-col items-start justify-start gap-4 p-6 md:p-10 lg:p-12 pt-28 md:pt-32 lg:pt-36'>
         <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
           Explore your place <br />to stay
         </p>
@@ -56,24 +56,24 @@ function Header() {
         </div>
         
 
-        {/* Toggle Button for Mobile */}
+        {/* Toggle Button for Mobile - only show on small screens */}
         <button 
           onClick={() => setShowForm(!showForm)}
-          className='md:hidden flex items-center justify-center gap-2 rounded-md bg-primary py-2 px-6 text-white hover:bg-primary/90 transition-all w-full'
+          className='md:hidden flex items-center justify-center gap-2 rounded-md bg-primary py-2 px-4 text-white hover:bg-primary/90 transition-all w-full text-sm'
         >
-          <img src={assets.searchIcon} alt="" />
+          <img src={assets.searchIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4' />
           <span>{showForm ? 'Hide Search' : 'Search Hotels'}</span>
         </button>
 
         {/* Booking Form */}
-        <form className={`bg-white text-gray-500 rounded-lg px-6 py-4 flex flex-col md:flex-row max-md:items-start gap-6 max-md:mx-auto ${showForm ? 'block' : 'hidden md:flex'}`}>
+        <form className={`bg-white text-gray-500 rounded-lg px-5 sm:px-4 md:px-5 py-4 sm:py-3 md:py-4 flex flex-col md:flex-row max-md:items-start gap-4 sm:gap-3 md:gap-4 max-md:w-full ${showForm ? 'block' : 'hidden md:flex'}`}>
 
-            <div>
-                <div className='flex items-center gap-2'>
-                    <img src={assets.locationIcon} alt="" />
-                    <label htmlFor="destinationInput">Destination</label>
+            <div className='w-full sm:w-auto'>
+                <div className='flex items-center gap-2 sm:gap-1.5 md:gap-2'>
+                    <img src={assets.locationIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
+                    <label htmlFor="destinationInput" className='text-sm sm:text-xs md:text-sm'>Destination</label>
                 </div>
-                <input list='destinations' id="destinationInput" type="text" className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none" placeholder="Type here" required />
+                <input list='destinations' id="destinationInput" type="text" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" placeholder="Type here" required />
                 <datalist id='destinations'>
                   {cities.map((city, index)=>(
                     <option value={city} key={index} />
@@ -81,33 +81,33 @@ function Header() {
                 </datalist>
             </div>
 
-            <div>
-                <div className='flex items-center gap-2'>
-                    <img src={assets.calenderIcon} alt="" />
-                    <label htmlFor="checkIn">Check in</label>
+            <div className='w-full sm:w-auto'>
+                <div className='flex items-center gap-2 sm:gap-1.5 md:gap-2'>
+                    <img src={assets.calenderIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
+                    <label htmlFor="checkIn" className='text-sm sm:text-xs md:text-sm'>Check in</label>
                 </div>
-                <input id="checkIn" type="date" className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none" />
+                <input id="checkIn" type="date" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" />
             </div>
 
-            <div>
-                <div className='flex items-center gap-2'>
-                    <img src={assets.calenderIcon} alt="" />
-                    <label htmlFor="checkOut">Check out</label>
+            <div className='w-full sm:w-auto'>
+                <div className='flex items-center gap-2 sm:gap-1.5 md:gap-2'>
+                    <img src={assets.calenderIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
+                    <label htmlFor="checkOut" className='text-sm sm:text-xs md:text-sm'>Check out</label>
                 </div>
-                <input id="checkOut" type="date" className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none" />
+                <input id="checkOut" type="date" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" />
             </div>
 
-            <div className='flex md:flex-col max-md:gap-2 max-md:items-center'>
-                <div className='flex items-center gap-2'>
-                    <img src={assets.guestsIcon} alt="" />
-                    <label htmlFor="guests">Guests</label>
+            <div className='flex md:flex-col max-md:gap-2 max-md:items-center w-full sm:w-auto'>
+                <div className='flex items-center gap-2 sm:gap-1.5 md:gap-2'>
+                    <img src={assets.guestsIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
+                    <label htmlFor="guests" className='text-sm sm:text-xs md:text-sm'>Guests</label>
                 </div>
-                <input min={1} max={4} id="guests" type="number" className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none  max-w-16" placeholder="0" />
+                <input min={1} max={4} id="guests" type="number" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-20 sm:w-16 md:w-20" placeholder="0" />
             </div>
 
-            <div className='flex items-center md:ml-4 md:mr-2'>
-                <button className='flex items-center justify-center gap-2 rounded-md bg-primary py-2 px-6 text-white cursor-pointer max-md:w-full hover:bg-primary/90 transition-all' >
-                    <img src={assets.searchIcon} alt="" />
+            <div className='flex items-center md:ml-2 lg:ml-3 w-full sm:w-auto'>
+                <button className='flex items-center justify-center gap-2 sm:gap-1.5 md:gap-2 rounded-md bg-primary py-2.5 sm:py-1.5 md:py-2.5 px-5 sm:px-4 md:px-5 text-white cursor-pointer w-full hover:bg-primary/90 transition-all text-sm sm:text-xs md:text-sm' >
+                    <img src={assets.searchIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
                     <span>Search</span>
                 </button>
             </div>
@@ -115,8 +115,8 @@ function Header() {
         
       </div>
 
-      {/* right side - bottom right corner */}
-      <div className='absolute bottom-0 right-0 z-10 max-w-md flex flex-col justify-end gap-3 p-6 md:p-10 lg:p-12'>
+      {/* right side - bottom right corner - hidden on mobile */}
+      <div className='hidden sm:flex absolute bottom-0 right-0 z-10 max-w-md flex-col justify-end gap-3 p-6 md:p-10 lg:p-12'>
         <div className='border-l-4 border-primary pl-4 md:pl-6'>
           <p className='text-base md:text-lg text-white'>
             We provide a variety of the best <br /> lodging accommodations for those <br /> of you who need it.

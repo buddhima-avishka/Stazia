@@ -7,11 +7,17 @@ import Middle from '../components/Middle'
 
 function Home() {
   return (
-    <div>
+    <div className='min-h-screen'>
+      {/* Header without navbar */}
       <Header/>
-      <TopDestonations/>
-      <Middle/>
-      <PropertyType/>
+      
+      {/* Content sections with responsive container */}
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <TopDestonations/>
+        <Middle/>
+        <PropertyType/>
+      </div>
+      
       <SubFooter/>
     </div>
   )
