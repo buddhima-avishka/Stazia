@@ -7,7 +7,7 @@ function MyProfile() {
     name: "Edward Vincent",
     image: assets.profile_pic,
     email: "richardjameswap@gmail.com",
-    phone: "+1  123 456 7890",
+    phone: "+1 123 456 7890",
     address: {
       line1: "57th Cross, Richmond",
       line2: "Circle, Church Road, London"

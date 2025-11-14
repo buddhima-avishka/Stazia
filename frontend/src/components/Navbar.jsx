@@ -17,6 +17,7 @@ function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isVisible, setIsVisible] = React.useState(true);
     const [lastScrollY, setLastScrollY] = React.useState(0);
+    const [token, setToken] = React.useState(true);
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -62,11 +63,41 @@ function Navbar() {
 
                 {/* Desktop Right */}
                 <div className="hidden md:flex items-center gap-4">
-                    <button onClick={() => navigate('/login')} className='bg-primary text-white py-3 px-6 rounded-full font-light hidden md:block'>Create Account</button>
+                    {
+          token
+          ? <div className="flex items-center gap-2 cursor-pointer group relative">
+            <img className='w-8 rounded-full' src={assets.profile_pic} alt=''/>
+            <img className='w-2.5' src={assets.dropdown_icon} alt=''/>
+            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
+              <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
+                <p onClick={() => navigate('/MyProfile')} className='hover:text-black cursor-pointer'>My Profile</p>
+                <p onClick={() => navigate('/MyBookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
+                <p onClick={() => setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+              </div>
+            </div>
+          </div>
+          : <button onClick={() => navigate('/login')} className='bg-primary text-white py-3 px-6 rounded-full font-light hidden md:block'>Create Account</button>
+        }
+        
                 </div>
 
                 {/* Mobile Menu Button */}
                 <div className="flex items-center gap-3 md:hidden">
+                    {
+                        token
+                        ? <div className="flex items-center gap-2 cursor-pointer group relative">
+                            <img className='w-8 rounded-full' src={assets.profile_pic} alt=''/>
+                            <img className='w-2.5' src={assets.dropdown_icon} alt=''/>
+                            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
+                                <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
+                                    <p onClick={() => navigate('/MyProfile')} className='hover:text-black cursor-pointer'>My Profile</p>
+                                    <p onClick={() => navigate('/MyBookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
+                                    <p onClick={() => setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+                                </div>
+                            </div>
+                        </div>
+                        : <button onClick={() => navigate('/login')} className='bg-primary text-white py-2 px-4 rounded-full font-light text-sm'>Login</button>
+                    }
                     <img src={assets.menu_icon} alt="" className='h-6 cursor-pointer' onClick={() => setIsMenuOpen(true)} />
                 </div>
 
