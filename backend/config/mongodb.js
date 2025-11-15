@@ -11,11 +11,13 @@ const connectDB = async () => {
     });
 
     await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: 'stazia'
+      dbName: 'stazia',
+      serverSelectionTimeoutMS: 5000
     });
   } catch (error) {
     console.error("Failed to connect to MongoDB:", error.message);
-    process.exit(1);
+    console.warn("⚠️  Server will continue running. Please whitelist your IP in MongoDB Atlas.");
+    // Don't exit - let server continue running
   }
 };
 
