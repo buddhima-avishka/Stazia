@@ -40,23 +40,61 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
-      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
-        <p><span>{state}</span> Login</p>
-        <div>
-          <p>Email</p>
-          <input onChange={(e)=>setEmail(e.target.value)} value={email} className='border min-w-[340px] sm:min-w-96' type="email" required/>
+    <form onSubmit={onSubmitHandler} className='min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4'>
+      <div className='flex flex-col gap-5 m-auto items-start p-10 min-w-[340px] sm:min-w-[420px] bg-white border border-gray-200 rounded-2xl text-gray-700 shadow-2xl'>
+        
+        {/* Header */}
+        <div className='w-full text-center mb-4'>
+          <p className='text-3xl font-bold text-gray-800 mb-2'>
+            <span style={{color: '#C49C74'}}>{state}</span> Login
+          </p>
+          <p className='text-sm text-gray-500'>Welcome back! Please login to your account</p>
         </div>
-        <div>
-          <p>Password</p>
-          <input onChange={(e)=>setPassword(e.target.value)} value={password} className='border min-w-[340px] sm:min-w-96' type="password" required/>
+
+        {/* Email Input */}
+        <div className='w-full'>
+          <p className='text-sm font-semibold text-gray-700 mb-2'>Email Address</p>
+          <input 
+            onChange={(e)=>setEmail(e.target.value)} 
+            value={email} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            style={{focusRingColor: '#C49C74'}}
+            type="email" 
+            placeholder='admin@stayzia.com'
+            required
+          />
         </div>
-        <button className='border'>Login</button>
-        {
-          state === 'Admin'
-          ? <p>Doctor Login? <span onClick={()=>setState('Doctor')}>Click here</span></p>
-          : <p>Admin Login? <span onClick={()=>setState('Admin')}>Click here</span></p>
-        }
+
+        {/* Password Input */}
+        <div className='w-full'>
+          <p className='text-sm font-semibold text-gray-700 mb-2'>Password</p>
+          <input 
+            onChange={(e)=>setPassword(e.target.value)} 
+            value={password} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            style={{focusRingColor: '#C49C74'}}
+            type="password" 
+            placeholder='Enter your password'
+            required
+          />
+        </div>
+
+        {/* Login Button */}
+        <button 
+          className='w-full text-white font-semibold py-3 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all shadow-lg mt-2' 
+          style={{backgroundColor: '#C49C74'}}
+        >
+          Login
+        </button>
+
+        {/* Switch Login Type */}
+        <div className='w-full text-center mt-2'>
+          {
+            state === 'Admin'
+            ? <p className='text-sm text-gray-600'>Doctor Login? <span onClick={()=>setState('Doctor')} className='font-semibold cursor-pointer hover:underline transition-all' style={{color: '#C49C74'}}>Click here</span></p>
+            : <p className='text-sm text-gray-600'>Admin Login? <span onClick={()=>setState('Admin')} className='font-semibold cursor-pointer hover:underline transition-all' style={{color: '#C49C74'}}>Click here</span></p>
+          }
+        </div>
       </div>
     </form>
   )
