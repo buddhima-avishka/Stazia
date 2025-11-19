@@ -16,6 +16,7 @@ const hotelSchema = new mongoose.Schema(
     rating: { type: Number, required: true },
     address: { type: Object },
     map: { type: String, required: false, default: "" },
+    roomImages: { type: Array, default: [] },
     date: { type: Number, required: true },
     slots_booked: { type: Object, default: {} },
   },

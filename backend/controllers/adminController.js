@@ -21,7 +21,13 @@ const addHotel = async (req, res) => {
       rating,
       map,
     } = req.body;
-    const imageFile = req.file;
+
+    // Handle multiple files from multer
+    const imageFile = req.files?.image?.[0];
+    const roomImage0 = req.files?.roomImage0?.[0];
+    const roomImage1 = req.files?.roomImage1?.[0];
+    const roomImage2 = req.files?.roomImage2?.[0];
+    const roomImage3 = req.files?.roomImage3?.[0];
 
     // checking for all data to add hotel
     if (
@@ -67,15 +73,41 @@ const addHotel = async (req, res) => {
       });
     }
 
+    // parsing amenities JSON
+    let parsedAmenities;
+    try {
+      parsedAmenities =
+        typeof amenities === "string" ? JSON.parse(amenities) : amenities;
+    } catch (jsonError) {
+      parsedAmenities = [];
+    }
+
     // hashing password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // uploading image to cloudinary
+    // uploading main image to cloudinary
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
       resource_type: "image",
     });
     const imageUrl = imageUpload.secure_url;
+
+    // Upload room images to cloudinary
+    const roomImageUrls = [];
+    const roomImageFiles = [roomImage0, roomImage1, roomImage2, roomImage3];
+
+    for (const roomImg of roomImageFiles) {
+      if (roomImg) {
+        try {
+          const upload = await cloudinary.uploader.upload(roomImg.path, {
+            resource_type: "image",
+          });
+          roomImageUrls.push(upload.secure_url);
+        } catch (uploadError) {
+          console.log("Room image upload failed:", uploadError);
+        }
+      }
+    }
 
     const hotelData = {
       name,
@@ -84,7 +116,7 @@ const addHotel = async (req, res) => {
       image: imageUrl,
       roomType,
       property,
-      amenities,
+      amenities: parsedAmenities.join(", "), // Convert array to comma-separated string
       about,
       available: true,
       pricePerNight: Number(pricePerNight),
@@ -95,6 +127,11 @@ const addHotel = async (req, res) => {
       date: Date.now(),
       slots_booked: {},
     };
+
+    // Add room images if any were uploaded
+    if (roomImageUrls.length > 0) {
+      hotelData.roomImages = roomImageUrls;
+    }
 
     const newHotel = new hotelModel(hotelData);
     await newHotel.save();

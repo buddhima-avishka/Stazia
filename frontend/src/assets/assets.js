@@ -213,6 +213,11 @@ export const stays = [
     image: hotel1,
     roomType: "Double Bed",
     property: "Hotels",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
@@ -228,6 +233,11 @@ export const stays = [
     image: hotel2,
     roomType: "Single Bed",
     property: "Apartments",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
@@ -243,6 +253,11 @@ export const stays = [
     image: hotel3,
     roomType: "Family Suite",
     property: "Resorts",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
@@ -258,6 +273,11 @@ export const stays = [
     image: hotel4,
     roomType: "Luxury Room",
     property: "Cottages",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
@@ -273,6 +293,11 @@ export const stays = [
     image: hotel5,
     roomType: "Luxury Room",
     property: "Villas",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
@@ -288,6 +313,11 @@ export const stays = [
     image: hotel6,
     roomType: "Double Bed",
     property: "Cottages",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",
@@ -303,6 +333,11 @@ export const stays = [
     image: hotel7,
     roomType: "Single Bed",
     property: "Resorts",
+    roomImages: [room1, room2, room3, room4, room5, room6, room7],
+    address: {
+      line1: "123 Main Street",
+      line2: "Kandy",
+    },
     amenities: ["Free WiFi", "Free Breakfast", "Room Service"],
     about:
       "A hotel is a commercial establishment providing short-term, paid lodging and a variety of services for travelers, ranging from basic rooms to luxurious suites with amenities like restaurants, pools, and spas. Hotels are a significant part of the hospitality industry, offering a spectrum of services and facilities to cater to different needs, from families and business travelers to tourists.",

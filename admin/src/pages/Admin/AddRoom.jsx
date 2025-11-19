@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { assets } from '../../assets/assets'
+import { AdminContext } from '../../context/AdminContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 function AddRoom() {
 
   const [image, setImage] = useState(false)
   const [name, setName] = useState('')
+  const [address1, setAddress1] = useState('')
+  const [address2, setAddress2] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [roomType, setRoomType] = useState('Double Bed')
   const [property, setProperty] = useState('Hotels')
   const [roomImages, setRoomImages] = useState([false, false, false, false])
@@ -58,27 +65,76 @@ function AddRoom() {
         setLocation(loc);
         setIsLocationOpen(false);
     };
+  
+  const { backendUrl, aToken} = useContext(AdminContext)  
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     
     try {
-      // Form submission logic here
-      console.log({
-        image,
-        name,
-        roomType,
-        property,
-        roomImages,
-        amenities,
-        about,
-        pricePerNight,
-        location,
-        map,
-        rating
+      if (!image) {
+        return toast.error('Room Image Not Selected')
+      }
+
+      const formData = new FormData()
+
+      formData.append('image',image)
+      formData.append('name',name)
+      formData.append('address', JSON.stringify({line1:address1,line2:address2}))
+      formData.append('email',email)
+      formData.append('password',password)
+      formData.append('roomType',roomType)
+      formData.append('property',property)
+      
+      // Append room images individually
+      roomImages.forEach((img, index) => {
+        if (img) {
+          formData.append(`roomImage${index}`, img)
+        }
       })
+      
+      formData.append('amenities', JSON.stringify(amenities))
+      formData.append('about',about)
+      formData.append('pricePerNight',pricePerNight)
+      formData.append('location',location)
+      formData.append('map',map)
+      formData.append('rating',rating)
+
+      // console log formData
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
+      const {data} = await axios.post(backendUrl + '/api/admin/add-hotel', formData, {headers:{ aToken }})
+
+      if (data.success) {
+        toast.success(data.message)
+        // Reset form after successful submission
+        setImage(false)
+        setName('')
+        setAddress1('')
+        setAddress2('')
+        setEmail('')
+        setPassword('')
+        setRoomType('Double Bed')
+        setProperty('Hotels')
+        setRoomImages([false, false, false, false])
+        setAmenities([])
+        setAbout('')
+        setPricePerNight('')
+        setLocation('Kandy')
+        setMap('')
+        setRating('')
+        setSelected('Double Bed')
+        setSelectedProperty('Hotels')
+        setSelectedLocation('Kandy')
+      } else {
+        toast.error(data.message)
+      }
+
     } catch (error) {
       console.log(error)
+      toast.error(error.message)
     }
   }
 
@@ -93,32 +149,80 @@ function AddRoom() {
         {/* Upload Image */}
         <div className='flex flex-col gap-3 mb-6'>
           <p className='text-sm font-semibold text-gray-700'>Upload Room Image</p>
-          <label htmlFor='room-img'>
-            <img 
-              className='w-32 h-32 object-cover rounded-lg cursor-pointer border-2 border-dashed hover:border-solid transition-all' 
-              style={{borderColor: '#C49C74'}}
-              src={image ? URL.createObjectURL(image) : assets.upload_area} 
-              alt="" 
+          <div>
+            <label htmlFor='room-img' className='inline-block'>
+              <img 
+                className='w-32 h-32 object-cover rounded-lg cursor-pointer border-2 border-dashed hover:border-solid transition-all' 
+                style={{borderColor: '#C49C74'}}
+                src={image ? URL.createObjectURL(image) : assets.upload_area} 
+                alt="" 
+              />
+            </label>
+            <input 
+              onChange={(e) => setImage(e.target.files[0])} 
+              type="file" 
+              id='room-img' 
+              hidden 
             />
-          </label>
-          <input 
-            onChange={(e) => setImage(e.target.files[0])} 
-            type="file" 
-            id='room-img' 
-            hidden 
-            required
-          />
+          </div>
         </div>
 
         {/* Room Name */}
         <div className='flex flex-col gap-2 mb-6'>
-          <p className='text-sm font-semibold text-gray-700'>Room Name</p>
+          <p className='text-sm font-semibold text-gray-700'>Property Name</p>
           <input 
             onChange={(e) => setName(e.target.value)} 
             value={name} 
             className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
             type="text" 
-            placeholder='Kemah Tinggi Hotel'
+            placeholder='Hotel Name'
+            required
+          />
+        </div>
+
+        {/* Address */}
+        <div className='flex flex-col gap-2 mb-6'>
+          <p className='text-sm font-semibold text-gray-700'>Property Address</p>
+          <input 
+            onChange={(e) => setAddress1(e.target.value)} 
+            value={address1} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            type="text" 
+            placeholder='Line 1'
+            required
+          />
+          <input 
+            onChange={(e) => setAddress2(e.target.value)} 
+            value={address2} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            type="text" 
+            placeholder='Line 2'
+            required
+          />
+        </div>
+
+        {/* Property Email */}
+        <div className='flex flex-col gap-2 mb-6'>
+          <p className='text-sm font-semibold text-gray-700'>Owner Email</p>
+          <input 
+            onChange={(e) => setEmail(e.target.value)} 
+            value={email} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            type="email" 
+            placeholder='Email'
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div className='flex flex-col gap-2 mb-6'>
+          <p className='text-sm font-semibold text-gray-700'>Owner Password</p>
+          <input 
+            onChange={(e) => setPassword(e.target.value)} 
+            value={password} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            type="password" 
+            placeholder='Password'
             required
           />
         </div>
@@ -206,10 +310,10 @@ function AddRoom() {
         {/* Upload Room Images */}
         <div className='flex flex-col gap-3 mb-6'>
           <p className='text-sm font-semibold text-gray-700'>Upload Room Images (4 Images)</p>
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+          <div className='flex gap-2 flex-wrap'>
             {roomImages.map((img, index) => (
               <div key={index}>
-                <label htmlFor={`room-img-${index}`}>
+                <label htmlFor={`room-img-${index}`} className='inline-block'>
                   <img 
                     className='w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-dashed hover:border-solid transition-all' 
                     style={{borderColor: '#C49C74'}}
@@ -270,7 +374,7 @@ function AddRoom() {
             value={pricePerNight}
             className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
             type="number" 
-            placeholder='6000'
+            placeholder='LKR'
             required
           />
         </div>
@@ -339,7 +443,7 @@ function AddRoom() {
             step="0.1"
             min="0"
             max="5"
-            placeholder='4.9'
+            placeholder='out of 5'
             required
           />
         </div>
