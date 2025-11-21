@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import hotelModel from "../models/hotelModel.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 // API for adding hotels
 const addHotel = async (req, res) => {
@@ -173,4 +174,24 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-export { addHotel, loginAdmin };
+// API to get all rooms list for admin panel
+const allRooms = async (req, res) => {
+  try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.json({
+        success: false,
+        message:
+          "Database not connected. Please whitelist your IP in MongoDB Atlas and restart the server.",
+      });
+    }
+
+    const rooms = await hotelModel.find({}).select("-password");
+    res.json({ success: true, rooms });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { addHotel, loginAdmin, allRooms };

@@ -1,5 +1,5 @@
 import express from "express";
-import { addHotel, loginAdmin } from "../controllers/adminController.js";
+import { addHotel, allRooms, loginAdmin } from "../controllers/adminController.js";
 import upload from "../middlewares/multer.js";
 import authAdmin from "../middlewares/authAdmin.js";
 
@@ -19,5 +19,6 @@ adminRouter.post(
   addHotel
 );
 adminRouter.post("/login", loginAdmin);
+adminRouter.post("/all-rooms", authAdmin, allRooms);
 
 export default adminRouter;
