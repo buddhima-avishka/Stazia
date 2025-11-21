@@ -26,6 +26,26 @@ function RoomsList() {
     }
   }
 
+  const changeAvailability = async (roomId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + '/api/admin/change-availability', 
+        { roomId }, 
+        { headers: { aToken } }
+      )
+
+      if (data.success) {
+        toast.success(data.message)
+        fetchRooms() // Refresh the room list
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.error('Error changing availability:', error)
+      toast.error(error.message)
+    }
+  }
+
   useEffect(() => {
     if (aToken) {
       fetchRooms()
@@ -73,7 +93,7 @@ function RoomsList() {
                   {room.property}
                 </p>
                 
-                <div className='flex items-center justify-between'>
+                {/* <div className='flex items-center justify-between'>
                   <div className='flex items-center gap-1'>
                     <span className='text-yellow-500 text-sm'>★</span>
                     <span className='text-sm font-medium text-gray-700'>{room.rating}</span>
@@ -81,12 +101,22 @@ function RoomsList() {
                   <p className='text-lg font-bold' style={{ color: '#C49C74' }}>
                     LKR {room.pricePerNight}
                   </p>
-                </div>
+                </div> */}
 
                 <div className='mt-3 pt-3 border-t border-gray-200'>
-                  <p className='text-xs text-gray-500'>
+                  {/* <p className='text-xs text-gray-500 mb-2'>
                     📍 {room.location}
-                  </p>
+                  </p> */}
+                  <div className='flex items-center gap-2'>
+                    <input 
+                      type="checkbox" 
+                      checked={room.available}
+                      onChange={() => changeAvailability(room._id)}
+                      className='w-4 h-4 cursor-pointer'
+                      style={{ accentColor: '#C49C74' }}
+                    />
+                    <p className='text-xs text-gray-600'>Available</p>
+                  </div>
                 </div>
               </div>
             </div>
