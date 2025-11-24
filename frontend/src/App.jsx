@@ -12,10 +12,12 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import MyProfile from './pages/MyProfile'
 import MyBookings from './pages/MyBookings'
+import { ToastContainer, toast } from 'react-toastify';
  
 function App() {
   return (
     <div>
+      <ToastContainer />
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home />} />

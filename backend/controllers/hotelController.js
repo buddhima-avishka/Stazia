@@ -15,4 +15,15 @@ const changeAvailability = async (req, res) => {
   }
 };
 
-export { changeAvailability };
+const roomList = async (req,res) => {
+  try {
+    const rooms = await hotelModel.find({}).select(['-password', '-email'])
+    res.json({success:true, rooms})
+    
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+}
+
+export { changeAvailability, roomList };
