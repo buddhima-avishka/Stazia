@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react'
 import MakeBookingsHeader from '../components/MakeBookingsHeader'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { facilityIcons, roomCommonData, assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 function MakeBookings() {
 
   const {_id} = useParams()
-  const {rooms} = useContext(AppContext)
+  const {rooms, backendUrl, token, getRoomsData} = useContext(AppContext)
   const [room, setRoom] = useState(null)
   const [mainImage, setMainImage] = useState(null)
   const [checkInDate, setCheckInDate] = useState('')
@@ -15,6 +17,86 @@ function MakeBookings() {
   const [numberOfGuests, setNumberOfGuests] = useState('')
   const [isChecked, setIsChecked] = useState(false)
   const [showBookNow, setShowBookNow] = useState(false)
+
+  const navigate = useNavigate()
+
+  // Reset availability check when dates or guests change
+  const handleCheckInChange = (e) => {
+    setCheckInDate(e.target.value)
+    setIsChecked(false)
+    setShowBookNow(false)
+  }
+
+  const handleCheckOutChange = (e) => {
+    setCheckOutDate(e.target.value)
+    setIsChecked(false)
+    setShowBookNow(false)
+  }
+
+  const handleGuestsChange = (e) => {
+    setNumberOfGuests(e.target.value)
+    setIsChecked(false)
+    setShowBookNow(false)
+  }
+
+  const bookAppointment = async () => {
+
+    if (!token) {
+      toast.warn("Login to book appointment, please login first.")
+      return navigate("/login")
+    }
+
+    if (!checkInDate || !checkOutDate || !numberOfGuests) {
+      toast.error("Please fill in all booking details and check availability first")
+      return
+    }
+
+    if (!isChecked) {
+      toast.warn("Please check availability before booking")
+      return
+    }
+    
+    try {
+      const slotDate = checkInDate // Using check-in date as slot date
+      
+      const { data } = await axios.post(
+        backendUrl + '/api/user/book-appointment',
+        { 
+          hotelId: _id, 
+          slotDate,
+          checkInDate, 
+          checkOutDate, 
+          numberOfGuests: Number(numberOfGuests) 
+        },
+        { headers: { token } }
+      )
+
+      if (data.success) {
+        toast.success(data.message)
+        toast.info(`Total: Rs. ${data.totalPrice} for ${data.numberOfNights} night(s)`)
+        getRoomsData()
+        
+        // Reset form
+        setCheckInDate('')
+        setCheckOutDate('')
+        setNumberOfGuests('')
+        setIsChecked(false)
+        setShowBookNow(false)
+        
+        // Navigate to bookings page after short delay
+        setTimeout(() => {
+          navigate('/MyBookings')
+        }, 2000)
+      } else {
+        toast.error(data.message)
+      }
+      
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+
+  }
 
   useEffect(() => {
     const foundRoom = rooms.find(room => room._id === _id)
@@ -41,21 +123,22 @@ function MakeBookings() {
     e.preventDefault()
     
     if (!checkInDate || !checkOutDate || !numberOfGuests) {
-      alert('Please fill in all fields')
+      toast.error('Please fill in all fields')
       return
     }
 
     if (new Date(checkOutDate) <= new Date(checkInDate)) {
-      alert('Check-out date must be after check-in date')
+      toast.error('Check-out date must be after check-in date')
       return
     }
 
     if (room.available) {
-      alert('Room is available for your selected dates!')
+      toast.success('Room is available for your selected dates!')
+      toast.info('Click the "Book Now" button below to confirm your booking')
       setShowBookNow(true)
       setIsChecked(true)
     } else {
-      alert('Room is not available for your selected dates')
+      toast.error('Room is not available for your selected dates')
       setShowBookNow(false)
       setIsChecked(true)
     }
@@ -168,7 +251,7 @@ function MakeBookings() {
                 <input
                   type='date'
                   value={checkInDate}
-                  onChange={(e) => setCheckInDate(e.target.value)}
+                  onChange={handleCheckInChange}
                   min={today}
                   required
                   className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm'
@@ -184,7 +267,7 @@ function MakeBookings() {
                 <input
                   type='date'
                   value={checkOutDate}
-                  onChange={(e) => setCheckOutDate(e.target.value)}
+                  onChange={handleCheckOutChange}
                   min={checkInDate || today}
                   required
                   className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm'
@@ -200,7 +283,7 @@ function MakeBookings() {
                 <input
                   type='number'
                   value={numberOfGuests}
-                  onChange={(e) => setNumberOfGuests(e.target.value)}
+                  onChange={handleGuestsChange}
                   min='1'
                   max='10'
                   required
@@ -225,11 +308,11 @@ function MakeBookings() {
                     disabled={!room.available}
                     className={`w-full px-6 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
                       room.available 
-                        ? 'bg-green-600 text-white hover:bg-green-700 cursor-pointer' 
+                        ? 'bg-primary text-white cursor-pointer' 
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                   >
-                    {room.available ? `Book Now` : 'Not Available'}
+                    {room.available ? `Available` : 'Not Available'}
                   </button>
                 )}
               </div>
@@ -253,8 +336,9 @@ function MakeBookings() {
           </div>
 
           {/* Booking Button */}
-          {/* <div className='mt-8'>
+          <div className='mt-8'>
             <button 
+              onClick={bookAppointment}
               disabled={!room.available}
               className={`w-full md:w-auto px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
                 room.available 
@@ -264,7 +348,7 @@ function MakeBookings() {
             >
               {room.available ? `Book Now - Rs. ${room.pricePerNight}` : 'Currently Unavailable'}
             </button>
-          </div> */}
+          </div>
 
           {/* Location Section */}
           <div className='mb-8 mt-8'>

@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
+import bookingModel from "../models/bookingModel.js";
+import hotelModel from "../models/hotelModel.js";
 
 // API to register user
 const registerUser = async (req, res) => {
@@ -127,4 +129,193 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getUserProfile, updateUserProfile };
+// API to make booking
+const bookAppointment = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { hotelId, slotDate, checkInDate, checkOutDate, numberOfGuests } =
+      req.body;
+
+    // Validate required fields
+    if (!hotelId || !slotDate || !checkInDate || !checkOutDate) {
+      return res.json({ success: false, message: "Missing booking details" });
+    }
+
+    // Get hotel data
+    const hotelData = await hotelModel.findById(hotelId).select("-password");
+    if (!hotelData) {
+      return res.json({ success: false, message: "Hotel not found" });
+    }
+
+    // Check if hotel is available
+    if (!hotelData.available) {
+      return res.json({ success: false, message: "Hotel is not available" });
+    }
+
+    // Get user data
+    const userData = await userModel.findById(userId).select("-password");
+    if (!userData) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    // Calculate number of nights
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    const timeDiff = checkOut.getTime() - checkIn.getTime();
+    const numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if (numberOfNights < 1) {
+      return res.json({
+        success: false,
+        message: "Check-out date must be after check-in date",
+      });
+    }
+
+    // Calculate total price
+    const totalPrice = numberOfNights * hotelData.pricePerNight;
+
+    // Get or initialize slots_booked
+    let slots_booked = hotelData.slots_booked || {};
+
+    // Check if this user already has a booking for this specific hotel on this date
+    if (slots_booked[slotDate]) {
+      const existingBooking = slots_booked[slotDate].find(
+        (slot) => slot.userId.toString() === userId.toString()
+      );
+
+      if (existingBooking) {
+        return res.json({
+          success: false,
+          message: "You already have a booking for this hotel on this date",
+        });
+      }
+    } else {
+      slots_booked[slotDate] = [];
+    }
+
+    // Add the time slot
+    slots_booked[slotDate].push({
+      userId,
+      checkInDate,
+      checkOutDate,
+      booked: true,
+    });
+
+    // Update hotel with booked slots
+    await hotelModel.findByIdAndUpdate(hotelId, { slots_booked });
+
+    // Create booking data
+    const bookingData = {
+      userId,
+      hotelId,
+      slotDate,
+      userData: JSON.stringify(userData),
+      hotelData: JSON.stringify(hotelData),
+      roomType: hotelData.roomType,
+      checkInDate,
+      checkOutDate,
+      numberOfNights,
+      numberOfGuests: numberOfGuests || 1,
+      pricePerNight: hotelData.pricePerNight,
+      totalPrice,
+      cancelled: false,
+      payment: false,
+      isCompleted: false,
+    };
+
+    // Save booking
+    const newBooking = new bookingModel(bookingData);
+    await newBooking.save();
+
+    res.json({
+      success: true,
+      message: "Booking created successfully",
+      bookingId: newBooking._id,
+      totalPrice,
+      numberOfNights,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API to get user bookings for frontend MyBookings page
+const listAppointment = async (req, res) => {
+  try {
+    const { userId } = req;
+
+    // Get all bookings for this user, sorted by most recent first
+    const bookings = await bookingModel
+      .find({ userId })
+      .sort({ createdAt: -1 });
+
+    if (!bookings) {
+      return res.json({ success: false, message: "No bookings found" });
+    }
+
+    res.json({ success: true, bookings });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API to cancel booking
+const cancelAppointment = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { bookingId } = req.body;
+
+    if (!bookingId) {
+      return res.json({ success: false, message: "Booking ID is required" });
+    }
+
+    // Find the booking
+    const booking = await bookingModel.findById(bookingId);
+
+    if (!booking) {
+      return res.json({ success: false, message: "Booking not found" });
+    }
+
+    // Verify booking belongs to user
+    if (booking.userId.toString() !== userId) {
+      return res.json({ success: false, message: "Unauthorized action" });
+    }
+
+    // Check if already cancelled
+    if (booking.cancelled) {
+      return res.json({ success: false, message: "Booking already cancelled" });
+    }
+
+    // Update booking status
+    await bookingModel.findByIdAndUpdate(bookingId, { cancelled: true });
+
+    // Release the slot in hotel
+    const hotelData = await hotelModel.findById(booking.hotelId);
+    if (hotelData) {
+      let slots_booked = hotelData.slots_booked;
+      if (slots_booked[booking.slotDate]) {
+        slots_booked[booking.slotDate] = slots_booked[booking.slotDate].filter(
+          (slot) => slot.userId.toString() !== userId
+        );
+        await hotelModel.findByIdAndUpdate(booking.hotelId, { slots_booked });
+      }
+    }
+
+    res.json({ success: true, message: "Booking cancelled successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export {
+  registerUser,
+  loginUser,
+  getUserProfile,
+  updateUserProfile,
+  bookAppointment,
+  listAppointment,
+  cancelAppointment,
+};
