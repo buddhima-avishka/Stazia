@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+
+  const { backendUrl, token, setToken } = useContext(AppContext)
+  const navigate = useNavigate()
+
   const [state, setState] = useState("Sign Up");
 
   const [email, setEmail] = useState("");
@@ -10,10 +18,42 @@ function Login() {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+    try {
+
+      if (state === 'Sign Up') {
+        const {data} = await axios.post(backendUrl + '/api/user/register', {name,password,email})
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
+      } else {
+        const {data} = await axios.post(backendUrl + '/api/user/login', {password,email})
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
+      }
+      
+    } catch (error) {
+      toast.error(error.message)
+    }
+
   };
+
+  useEffect(()=>{
+    if (token) {
+      navigate('/')
+    }
+  },[token])
 
   return (
     <div
+      onSubmit={onSubmitHandler}
       className="flex h-[700px] w-80% mt-10 mb-10 overflow-hidden rounded-lg"
       style={{
         backgroundImage: `url(${assets.regImage})`,

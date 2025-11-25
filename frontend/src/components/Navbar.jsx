@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { assets } from '../assets/assets.js'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext.jsx';
 
 function Navbar() {
 
@@ -13,11 +14,18 @@ function Navbar() {
 
     const navigate = useNavigate();
 
+    const {token,setToken} = useContext(AppContext)
+
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isVisible, setIsVisible] = React.useState(true);
     const [lastScrollY, setLastScrollY] = React.useState(0);
-    const [token, setToken] = React.useState(true);
+    // const [token, setToken] = React.useState(true);
+
+    const logout = () => {
+        setToken(false)
+        localStorage.removeItem('token')
+    }
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -72,7 +80,7 @@ function Navbar() {
               <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                 <p onClick={() => navigate('/MyProfile')} className='hover:text-black cursor-pointer'>My Profile</p>
                 <p onClick={() => navigate('/MyBookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
-                <p onClick={() => setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+                <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
               </div>
             </div>
           </div>

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import MakeBookingsHeader from '../components/MakeBookingsHeader'
 import { useParams } from 'react-router-dom'
-import { stays, facilityIcons, roomCommonData, assets } from '../assets/assets'
+import { facilityIcons, roomCommonData, assets } from '../assets/assets'
+import { AppContext } from '../context/AppContext'
 
 function MakeBookings() {
 
   const {_id} = useParams()
+  const {rooms} = useContext(AppContext)
   const [room, setRoom] = useState(null)
   const [mainImage, setMainImage] = useState(null)
   const [checkInDate, setCheckInDate] = useState('')
@@ -14,24 +16,26 @@ function MakeBookings() {
   const [isChecked, setIsChecked] = useState(false)
   const [showBookNow, setShowBookNow] = useState(false)
 
-  // Gallery images using room photos from assets
-  const galleryImages = [
-    assets.room1,
-    assets.room2,
-    assets.room3,
-    assets.room4,
-    assets.room5,
-    assets.room6,
-    assets.room7,
-  ]
-
   useEffect(() => {
-    const foundRoom = stays.find(room => room._id === _id)
+    const foundRoom = rooms.find(room => room._id === _id)
     if (foundRoom) {
       setRoom(foundRoom)
       setMainImage(foundRoom.image)
     }
-  }, [_id])
+  }, [_id, rooms])
+
+  // Gallery images - use roomImages from database if available, otherwise fallback to assets
+  const galleryImages = room?.roomImages && room.roomImages.length > 0 
+    ? room.roomImages 
+    : [
+      assets.room1,
+      assets.room2,
+      assets.room3,
+      assets.room4,
+      assets.room5,
+      assets.room6,
+      assets.room7,
+    ]
 
   const handleCheckAvailability = (e) => {
     e.preventDefault()
@@ -46,7 +50,7 @@ function MakeBookings() {
       return
     }
 
-    if (room.isAvailable) {
+    if (room.available) {
       alert('Room is available for your selected dates!')
       setShowBookNow(true)
       setIsChecked(true)
@@ -135,11 +139,11 @@ function MakeBookings() {
           </div>
 
           {/* Amenities Section */}
-          {room.amenities && room.amenities.length > 0 && (
+          {room.amenities && (Array.isArray(room.amenities) ? room.amenities.length > 0 : room.amenities) && (
             <div className='mb-8'>
               <h2 className='text-2xl font-semibold text-gray-800 mb-4'>Amenities</h2>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                {room.amenities.map((amenity, index) => (
+                {(Array.isArray(room.amenities) ? room.amenities : (room.amenities?.split(',').map(a => a.trim()) || [])).map((amenity, index) => (
                   <div key={index} className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'>
                     {facilityIcons[amenity] && (
                       <img src={facilityIcons[amenity]} alt={amenity} className='w-6 h-6' />
@@ -218,14 +222,14 @@ function MakeBookings() {
                   <button
                     type='button'
                     onClick={handleBookNow}
-                    disabled={!room.isAvailable}
+                    disabled={!room.available}
                     className={`w-full px-6 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
-                      room.isAvailable 
+                      room.available 
                         ? 'bg-green-600 text-white hover:bg-green-700 cursor-pointer' 
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                   >
-                    {room.isAvailable ? `Book Now` : 'Not Available'}
+                    {room.available ? `Book Now` : 'Not Available'}
                   </button>
                 )}
               </div>
@@ -251,14 +255,14 @@ function MakeBookings() {
           {/* Booking Button */}
           {/* <div className='mt-8'>
             <button 
-              disabled={!room.isAvailable}
+              disabled={!room.available}
               className={`w-full md:w-auto px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
-                room.isAvailable 
+                room.available 
                   ? 'bg-primary text-white hover:scale-105 cursor-pointer' 
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >
-              {room.isAvailable ? `Book Now - Rs. ${room.pricePerNight}` : 'Currently Unavailable'}
+              {room.available ? `Book Now - Rs. ${room.pricePerNight}` : 'Currently Unavailable'}
             </button>
           </div> */}
 
