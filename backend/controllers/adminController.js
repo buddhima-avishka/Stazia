@@ -194,4 +194,6 @@ const allRooms = async (req, res) => {
   }
 };
 
+
+
 export { addHotel, loginAdmin, allRooms };

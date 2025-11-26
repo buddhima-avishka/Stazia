@@ -53,11 +53,265 @@ function MyBookings() {
     }
   }
 
+
+  // Handle Pay Now
+  const handlePayNow = async (bookingId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + '/api/user/initiate-payment',
+        { bookingId },
+        { headers: { token } }
+      )
+
+      if (data.success) {
+        const paymentDetails = data.paymentDetails
+        
+        // TEST MODE: Use custom modal to avoid Razorpay restrictions
+        // Create modal overlay
+        const modalOverlay = document.createElement('div')
+        modalOverlay.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 10000;
+        `
+
+        // Create modal content
+        const modalContent = document.createElement('div')
+        modalContent.style.cssText = `
+          background: white;
+          border-radius: 8px;
+          padding: 30px;
+          width: 400px;
+          max-width: 90%;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        `
+
+        modalContent.innerHTML = `
+          <div style="text-align: center; margin-bottom: 25px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stayzia" style="width: 60px; height: 60px; margin-bottom: 10px;">
+            <h2 style="margin: 10px 0; color: #333; font-size: 22px;">Stayzia</h2>
+            <p style="color: #666; font-size: 14px;">${paymentDetails.hotelName}</p>
+            <p style="color: #C49C74; font-size: 24px; font-weight: bold; margin-top: 10px;">LKR ${paymentDetails.amount}</p>
+          </div>
+          
+          <form id="paymentForm" style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+              <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Card Number</label>
+              <input 
+                type="text" 
+                id="cardNumber" 
+                placeholder="1234 5678 9012 3456" 
+                maxlength="19"
+                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+                required
+              />
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+              <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Expiry Date</label>
+                <input 
+                  type="text" 
+                  id="expiryDate" 
+                  placeholder="MM/YY" 
+                  maxlength="5"
+                  style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+                  required
+                />
+              </div>
+              
+              <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">CVV</label>
+                <input 
+                  type="text" 
+                  id="cvv" 
+                  placeholder="123" 
+                  maxlength="3"
+                  style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Cardholder Name</label>
+              <input 
+                type="text" 
+                id="cardName" 
+                placeholder="John Doe"
+                value="${paymentDetails.customerName}"
+                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;"
+                required
+              />
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              <button 
+                type="submit" 
+                style="flex: 1; padding: 14px; background: #C49C74; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer;"
+              >
+                Pay LKR ${paymentDetails.amount}
+              </button>
+              <button 
+                type="button" 
+                id="cancelBtn"
+                style="padding: 14px 20px; background: #f3f4f6; color: #333; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+          
+          <p style="text-align: center; color: #999; font-size: 12px; margin-top: 15px;">
+            🔒 Secure Payment • Test Mode
+          </p>
+        `
+
+        modalOverlay.appendChild(modalContent)
+        document.body.appendChild(modalOverlay)
+
+        // Card number formatting
+        const cardNumberInput = document.getElementById('cardNumber')
+        cardNumberInput.addEventListener('input', (e) => {
+          let value = e.target.value.replace(/\s/g, '')
+          let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value
+          e.target.value = formattedValue
+        })
+
+        // Expiry date formatting
+        const expiryInput = document.getElementById('expiryDate')
+        expiryInput.addEventListener('input', (e) => {
+          let value = e.target.value.replace(/\D/g, '')
+          if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4)
+          }
+          e.target.value = value
+        })
+
+        // CVV number only
+        const cvvInput = document.getElementById('cvv')
+        cvvInput.addEventListener('input', (e) => {
+          e.target.value = e.target.value.replace(/\D/g, '')
+        })
+
+        // Handle form submission
+        const paymentForm = document.getElementById('paymentForm')
+        paymentForm.addEventListener('submit', async (e) => {
+          e.preventDefault()
+          
+          // Simulate payment processing
+          const submitBtn = e.target.querySelector('button[type="submit"]')
+          submitBtn.textContent = 'Processing...'
+          submitBtn.disabled = true
+          
+          // Simulate delay
+          await new Promise(resolve => setTimeout(resolve, 1500))
+          
+          // Close modal
+          document.body.removeChild(modalOverlay)
+          
+          // Show success
+          toast.success('Payment successful!')
+          
+          // Complete payment in backend
+          try {
+            const { data } = await axios.post(
+              backendUrl + '/api/user/complete-payment',
+              { 
+                bookingId: paymentDetails.bookingId,
+                paymentStatus: 'success',
+                razorpay_payment_id: 'test_' + Date.now()
+              },
+              { headers: { token } }
+            )
+            
+            if (data.success) {
+              getUserBookings()
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        })
+
+        // Handle cancel
+        const cancelBtn = document.getElementById('cancelBtn')
+        cancelBtn.addEventListener('click', () => {
+          document.body.removeChild(modalOverlay)
+          toast.info('Payment cancelled')
+        })
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
+  // 
+
+  const options = {
+    key: "rzp_test_HJG5Rtuy8Xh2NB",
+    amount: "100", //  = INR 1
+    name: "Acme shop",
+    description: "some description",
+    image: "https://cdn.razorpay.com/logos/7K3b6d18wHwKzL_medium.png",
+    handler: function(response) {
+      alert(response.razorpay_payment_id);
+    },
+    prefill: {
+      name: "Gaurav",
+      contact: "9999999999",
+      email: "demo@demo.com"
+    },
+    notes: {
+      address: "some address"
+    },
+    theme: {
+      color: "#F37254",
+      hide_topbar: false
+    }
+  };
+
+  const openPayModal = options => {
+    var rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   useEffect(()=>{
     if (token) {
       getUserBookings()
     }
   },[token])
+
+  // Load Razorpay script
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://checkout.razorpay.com/v1/checkout.js"
+    script.async = true
+    document.body.appendChild(script)
+    
+    return () => {
+      // Cleanup script when component unmounts
+      const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')
+      if (existingScript) {
+        document.body.removeChild(existingScript)
+      }
+    }
+  }, [])
+  // 
 
   return (
     <div className="min-h-screen">
@@ -171,7 +425,10 @@ function MyBookings() {
                               <div className="w-2 h-2 bg-red-600 rounded-full"></div>
                               <span className="font-semibold">Unpaid</span>
                             </div>
-                            <button className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all w-full">
+                            <button 
+                              onClick={() => handlePayNow(booking._id)} 
+                              className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all w-full"
+                            >
                               Pay Now
                             </button>
                           </div>

@@ -310,6 +310,82 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
+// API to make payment of appoinment using payhere
+const initiatePayment = async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+    const { userId } = req;
+
+    const booking = await bookingModel.findById(bookingId);
+
+    if (!booking) {
+      return res.json({ success: false, message: "Booking not found" });
+    }
+
+    if (booking.userId.toString() !== userId) {
+      return res.json({ success: false, message: "Unauthorized action" });
+    }
+
+    if (booking.payment) {
+      return res.json({ success: false, message: "Booking already paid" });
+    }
+
+    if (booking.cancelled) {
+      return res.json({
+        success: false,
+        message: "Cannot pay for cancelled booking",
+      });
+    }
+
+    const userData = JSON.parse(booking.userData);
+    const hotelData = JSON.parse(booking.hotelData);
+
+    // Return payment details for frontend to process
+    const paymentDetails = {
+      bookingId: booking._id,
+      amount: booking.totalPrice,
+      hotelName: hotelData.name,
+      customerName: userData.name,
+      customerEmail: userData.email,
+    };
+
+    res.json({ success: true, paymentDetails });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API to complete payment (test mode)
+const completePayment = async (req, res) => {
+  try {
+    const { bookingId, paymentStatus } = req.body;
+    const { userId } = req;
+
+    const booking = await bookingModel.findById(bookingId);
+
+    if (!booking) {
+      return res.json({ success: false, message: "Booking not found" });
+    }
+
+    if (booking.userId.toString() !== userId) {
+      return res.json({ success: false, message: "Unauthorized action" });
+    }
+
+    if (paymentStatus === "success") {
+      await bookingModel.findByIdAndUpdate(bookingId, {
+        payment: true,
+      });
+      res.json({ success: true, message: "Payment completed successfully" });
+    } else {
+      res.json({ success: false, message: "Payment failed or cancelled" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -318,4 +394,6 @@ export {
   bookAppointment,
   listAppointment,
   cancelAppointment,
+  initiatePayment,
+  completePayment,
 };
