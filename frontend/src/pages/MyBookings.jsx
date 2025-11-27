@@ -95,7 +95,7 @@ function MyBookings() {
 
         modalContent.innerHTML = `
           <div style="text-align: center; margin-bottom: 25px;">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stayzia" style="width: 60px; height: 60px; margin-bottom: 10px;">
+            <img src="https://5.imimg.com/data5/XN/LW/MY-15335734/payment-gateway.png" alt="Stayzia" style="width: 60px; height: 60px; margin-bottom: 10px;">
             <h2 style="margin: 10px 0; color: #333; font-size: 22px;">Stayzia</h2>
             <p style="color: #666; font-size: 14px;">${paymentDetails.hotelName}</p>
             <p style="color: #C49C74; font-size: 24px; font-weight: bold; margin-top: 10px;">LKR ${paymentDetails.amount}</p>

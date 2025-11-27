@@ -1,5 +1,12 @@
 import express from "express";
-import { addHotel, allRooms, loginAdmin } from "../controllers/adminController.js";
+import {
+  addHotel,
+  allRooms,
+  allBookings,
+  cancelAppointment,
+  dashboardData,
+  loginAdmin,
+} from "../controllers/adminController.js";
 import upload from "../middlewares/multer.js";
 import authAdmin from "../middlewares/authAdmin.js";
 import { changeAvailability } from "../controllers/hotelController.js";
@@ -21,6 +28,9 @@ adminRouter.post(
 );
 adminRouter.post("/login", loginAdmin);
 adminRouter.post("/all-rooms", authAdmin, allRooms);
+adminRouter.post("/all-bookings", authAdmin, allBookings);
+adminRouter.post("/cancel-appointment", authAdmin, cancelAppointment);
+adminRouter.get("/dashboard", authAdmin, dashboardData);
 adminRouter.post("/change-availability", authAdmin, changeAvailability);
 
 export default adminRouter;
