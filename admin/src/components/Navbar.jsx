@@ -2,18 +2,26 @@ import React from 'react'
 import assets from '../assets/assets'
 import { useContext } from 'react'
 import { AdminContext } from '../context/AdminContext'
+import { HotelContext } from '../context/HotelContext'
 import { useNavigate } from 'react-router-dom'
 
 function Navbar() {
 
   const {aToken,setAToken} = useContext(AdminContext)
+  const {hToken,setHToken} = useContext(HotelContext)
 
   const navigate = useNavigate()
 
   const logout = () => {
+    if (aToken) {
+      setAToken('')
+      localStorage.removeItem('aToken')
+    }
+    if (hToken) {
+      setHToken('')
+      localStorage.removeItem('hToken')
+    }
     navigate('/')
-    aToken && setAToken('')
-    aToken && localStorage.removeItem('aToken')
   }
 
   return (
@@ -22,7 +30,9 @@ function Navbar() {
         
     <div className='flex items-center text-xs'>
       <img src={assets.logo} alt="" className={`h-12 `}/>
-      <p className='border rounded-full border-gray-500 px-2.5 py-0.5'>{aToken ? 'Admin' : 'Doctor'}</p>
+      <p className='border rounded-full border-gray-500 px-2.5 py-0.5'>
+        {aToken ? 'Admin' : hToken ? 'Owner' : 'Guest'}
+      </p>
     </div>
 
 

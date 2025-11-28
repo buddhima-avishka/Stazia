@@ -3,6 +3,8 @@ import assets from '../assets/assets'
 import { AdminContext } from '../context/AdminContext'
 import axios from 'axios'
 import { toast } from "react-toastify";
+import { HotelContext } from "../context/HotelContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
@@ -12,6 +14,8 @@ const Login = () => {
   const [password,setPassword] = useState('');
 
   const {setAToken,backendUrl} = useContext(AdminContext);
+  const {setHToken} = useContext(HotelContext)
+  const navigate = useNavigate();
 
   const onSubmitHandler = async (event) => {
     
@@ -31,11 +35,21 @@ const Login = () => {
         }
 
       } else {
-
+        // Hotel Login
+        const {data} = await axios.post(backendUrl + '/api/hotel/login', {email,password})
+        if (data.success) {
+          localStorage.setItem('hToken', data.token);
+          setHToken(data.token)
+          toast.success('Hotel login successful!');
+          navigate('/hotel-dashboard');
+        } else {
+          toast.error(data.message)
+        }
       }
 
     } catch (error) {
-      
+      console.log(error);
+      toast.error(error.message || 'Login failed. Please try again.');
     }
   }
 
@@ -91,7 +105,7 @@ const Login = () => {
         <div className='w-full text-center mt-2'>
           {
             state === 'Admin'
-            ? <p className='text-sm text-gray-600'>Doctor Login? <span onClick={()=>setState('Doctor')} className='font-semibold cursor-pointer hover:underline transition-all' style={{color: '#C49C74'}}>Click here</span></p>
+            ? <p className='text-sm text-gray-600'>Hotel Login? <span onClick={()=>setState('Hotel')} className='font-semibold cursor-pointer hover:underline transition-all' style={{color: '#C49C74'}}>Click here</span></p>
             : <p className='text-sm text-gray-600'>Admin Login? <span onClick={()=>setState('Admin')} className='font-semibold cursor-pointer hover:underline transition-all' style={{color: '#C49C74'}}>Click here</span></p>
           }
         </div>
