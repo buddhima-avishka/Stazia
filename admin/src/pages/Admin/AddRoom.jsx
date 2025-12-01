@@ -10,10 +10,12 @@ function AddRoom() {
   const [name, setName] = useState('')
   const [address1, setAddress1] = useState('')
   const [address2, setAddress2] = useState('')
+  const [address3, setAddress3] = useState('')
+  const [address4, setAddress4] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [roomType, setRoomType] = useState('Double Bed')
-  const [property, setProperty] = useState('Hotels')
+  const [property, setProperty] = useState('Hotel')
   const [roomImages, setRoomImages] = useState([false, false, false, false])
   const [amenities, setAmenities] = useState([])
   const [about, setAbout] = useState('')
@@ -25,14 +27,29 @@ function AddRoom() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("Double Bed");
   const [isPropertyOpen, setIsPropertyOpen] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState("Hotels");
+  const [selectedProperty, setSelectedProperty] = useState("Hotel");
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("Kandy");
 
-  const availableAmenities = ['Free WiFi', 'Free Breakfast', 'Room Service', 'Mountain View', 'Pool Access']
-  const propertyTypes = ['Hotels', 'Apartments', 'Resorts', 'Villas', 'Cottages']
+  const availableAmenities = ['Free WiFi',
+    'Swimming Pool',
+    'Spa',
+    'Gym',
+    'Restaurant',
+    'Bar',
+    'Room Service',
+    'Parking',
+    'Air Conditioning',
+    'TV',
+    'Mini Bar',
+    'Laundry Service',
+    'Beach Access',
+    'Balcony',
+    'Kitchen',
+    'Jacuzzi']
+  const propertyTypes = ['Hotel', 'Apartment', 'Resort', 'Villa', 'Cottage']
   const roomTypes = ['Single Bed', 'Double Bed', 'Family Suite', 'Luxury Room']
-  const locations = ['Kandy', 'Galle', 'Matara', 'Colombo']
+  const locations = ['Matara', 'Galle', 'Hambantota', 'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Badulla', 'Monaragala', 'Jaffna', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Kilinochchi',  'Trincomalee', 'Batticaloa', 'Ampara', 'Anuradhapura', 'Polonnaruwa', 'Kurunegala', 'Puttalam', 'Ratnapura', 'Kegalle']
 
   const handleAmenityToggle = (amenity) => {
     if (amenities.includes(amenity)) {
@@ -80,7 +97,7 @@ function AddRoom() {
 
       formData.append('image',image)
       formData.append('name',name)
-      formData.append('address', JSON.stringify({line1:address1,line2:address2}))
+      formData.append('address', JSON.stringify({Street:address1,City:address2,State:address3,Zip:address4}))
       formData.append('email',email)
       formData.append('password',password)
       formData.append('roomType',roomType)
@@ -114,10 +131,12 @@ function AddRoom() {
         setName('')
         setAddress1('')
         setAddress2('')
+        setAddress3('')
+        setAddress4('')
         setEmail('')
         setPassword('')
         setRoomType('Double Bed')
-        setProperty('Hotels')
+        setProperty('Hotel')
         setRoomImages([false, false, false, false])
         setAmenities([])
         setAbout('')
@@ -126,7 +145,7 @@ function AddRoom() {
         setMap('')
         setRating('')
         setSelected('Double Bed')
-        setSelectedProperty('Hotels')
+        setSelectedProperty('Hotel')
         setSelectedLocation('Kandy')
       } else {
         toast.error(data.message)
@@ -188,7 +207,7 @@ function AddRoom() {
             value={address1} 
             className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
             type="text" 
-            placeholder='Line 1'
+            placeholder='Street'
             required
           />
           <input 
@@ -196,7 +215,23 @@ function AddRoom() {
             value={address2} 
             className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
             type="text" 
-            placeholder='Line 2'
+            placeholder='City'
+            required
+          />
+          <input 
+            onChange={(e) => setAddress3(e.target.value)} 
+            value={address3} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            type="text" 
+            placeholder='State'
+            required
+          />
+          <input 
+            onChange={(e) => setAddress4(e.target.value)} 
+            value={address4} 
+            className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all' 
+            type="text" 
+            placeholder='Zip Code'
             required
           />
         </div>
