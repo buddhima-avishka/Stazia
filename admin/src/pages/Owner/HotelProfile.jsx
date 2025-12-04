@@ -105,18 +105,24 @@ function HotelProfile() {
         setHotelData(data.hotelData)
         console.log('Hotel data loaded:', data.hotelData)
         
-        // Parse amenities
+        // Parse amenities - handle both string and array formats
         let parsedAmenities = []
         try {
-          parsedAmenities = typeof data.hotelData.amenities === 'string' 
-            ? JSON.parse(data.hotelData.amenities) 
-            : Array.isArray(data.hotelData.amenities) 
-            ? data.hotelData.amenities 
-            : []
+          if (typeof data.hotelData.amenities === 'string') {
+            // Try to parse as JSON string
+            parsedAmenities = JSON.parse(data.hotelData.amenities)
+          } else if (Array.isArray(data.hotelData.amenities)) {
+            parsedAmenities = data.hotelData.amenities
+          }
         } catch (error) {
           console.log('Error parsing amenities:', error)
-          parsedAmenities = []
+          // If JSON parse fails, try splitting as comma-separated string
+          if (typeof data.hotelData.amenities === 'string') {
+            parsedAmenities = data.hotelData.amenities.split(',').map(a => a.trim()).filter(a => a)
+          }
         }
+        
+        console.log('Parsed amenities:', parsedAmenities)
         
         // Initialize form data
         setFormData({
@@ -130,10 +136,10 @@ function HotelProfile() {
           rating: data.hotelData.rating || '',
           amenities: parsedAmenities,
           address: {
-            street: data.hotelData.address?.street || '',
-            city: data.hotelData.address?.city || '',
-            state: data.hotelData.address?.state || '',
-            zipCode: data.hotelData.address?.zipCode || ''
+            street: data.hotelData.address?.Street || data.hotelData.address?.street || '',
+            city: data.hotelData.address?.City || data.hotelData.address?.city || '',
+            state: data.hotelData.address?.State || data.hotelData.address?.state || '',
+            zipCode: data.hotelData.address?.Zip || data.hotelData.address?.zipCode || ''
           }
         })
       } else {
@@ -245,16 +251,19 @@ function HotelProfile() {
     setIsEdit(false)
     // Reset form data to original hotel data
     if (hotelData) {
-      // Parse amenities
+      // Parse amenities - handle both string and array formats
       let parsedAmenities = []
       try {
-        parsedAmenities = typeof hotelData.amenities === 'string' 
-          ? JSON.parse(hotelData.amenities) 
-          : Array.isArray(hotelData.amenities) 
-          ? hotelData.amenities 
-          : []
+        if (typeof hotelData.amenities === 'string') {
+          parsedAmenities = JSON.parse(hotelData.amenities)
+        } else if (Array.isArray(hotelData.amenities)) {
+          parsedAmenities = hotelData.amenities
+        }
       } catch (error) {
-        parsedAmenities = []
+        // If JSON parse fails, try splitting as comma-separated string
+        if (typeof hotelData.amenities === 'string') {
+          parsedAmenities = hotelData.amenities.split(',').map(a => a.trim()).filter(a => a)
+        }
       }
       
       setFormData({
@@ -268,10 +277,10 @@ function HotelProfile() {
         rating: hotelData.rating || '',
         amenities: parsedAmenities,
         address: {
-          street: hotelData.address?.street || '',
-          city: hotelData.address?.city || '',
-          state: hotelData.address?.state || '',
-          zipCode: hotelData.address?.zipCode || ''
+          street: hotelData.address?.Street || hotelData.address?.street || '',
+          city: hotelData.address?.City || hotelData.address?.city || '',
+          state: hotelData.address?.State || hotelData.address?.state || '',
+          zipCode: hotelData.address?.Zip || hotelData.address?.zipCode || ''
         }
       })
       setRoomImages([])
@@ -296,17 +305,20 @@ function HotelProfile() {
     )
   }
 
-  // Parse amenities if it's a string
+  // Parse amenities for display - handle both string and array formats
   let amenitiesList = []
   try {
-    amenitiesList = typeof hotelData.amenities === 'string' 
-      ? JSON.parse(hotelData.amenities) 
-      : Array.isArray(hotelData.amenities) 
-      ? hotelData.amenities 
-      : []
+    if (typeof hotelData.amenities === 'string') {
+      amenitiesList = JSON.parse(hotelData.amenities)
+    } else if (Array.isArray(hotelData.amenities)) {
+      amenitiesList = hotelData.amenities
+    }
   } catch (error) {
-    console.log('Error parsing amenities:', error)
-    amenitiesList = []
+    console.log('Error parsing amenities for display:', error)
+    // If JSON parse fails, try splitting as comma-separated string
+    if (typeof hotelData.amenities === 'string') {
+      amenitiesList = hotelData.amenities.split(',').map(a => a.trim()).filter(a => a)
+    }
   }
 
   return (
@@ -607,7 +619,7 @@ function HotelProfile() {
                         style={{focusRingColor: '#C49C74'}}
                       />
                     ) : (
-                      <p className='text-lg text-gray-900'>{hotelData.address?.street || '-'}</p>
+                      <p className='text-lg text-gray-900'>{hotelData.address?.Street || hotelData.address?.street || '-'}</p>
                     )}
                   </div>
                   <div>
@@ -622,7 +634,7 @@ function HotelProfile() {
                         style={{focusRingColor: '#C49C74'}}
                       />
                     ) : (
-                      <p className='text-lg text-gray-900'>{hotelData.address?.city || '-'}</p>
+                      <p className='text-lg text-gray-900'>{hotelData.address?.City || hotelData.address?.city || '-'}</p>
                     )}
                   </div>
                   <div>
@@ -637,7 +649,7 @@ function HotelProfile() {
                         style={{focusRingColor: '#C49C74'}}
                       />
                     ) : (
-                      <p className='text-lg text-gray-900'>{hotelData.address?.state || '-'}</p>
+                      <p className='text-lg text-gray-900'>{hotelData.address?.State || hotelData.address?.state || '-'}</p>
                     )}
                   </div>
                   <div>
@@ -652,7 +664,7 @@ function HotelProfile() {
                         style={{focusRingColor: '#C49C74'}}
                       />
                     ) : (
-                      <p className='text-lg text-gray-900'>{hotelData.address?.zipCode || '-'}</p>
+                      <p className='text-lg text-gray-900'>{hotelData.address?.Zip || hotelData.address?.zipCode || '-'}</p>
                     )}
                   </div>
                 </div>

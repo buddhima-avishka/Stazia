@@ -12,28 +12,45 @@ function Stays() {
   const [filterStay, setFilterStay] = useState([])
   const [activeFilters, setActiveFilters] = useState(null)
 
-  const {stays} = useContext(AppContext)
+  const {rooms, searchParams, setSearchParams} = useContext(AppContext)
   const navigate = useNavigate() 
 
   const applyFilter = () => {
+    let results = [...rooms]
+    
+    // Property filter from route param
     if(property){
-      setFilterStay(stays.filter(stay => stay.property === property))
-    } else {
-      setFilterStay(stays)
+      results = results.filter(stay => stay.property === property)
     }
+    
+    // Search params filter from header form
+    if(searchParams && searchParams.destination) {
+      results = results.filter(stay => 
+        stay.location && stay.location.toLowerCase().includes(searchParams.destination.toLowerCase())
+      )
+    }
+    
+    setFilterStay(results)
   }
 
   useEffect(() => {
     applyFilter()
-  },[stays,property])
+  },[rooms, property, searchParams])
 
   // Re-apply filters when activeFilters changes
   useEffect(() => {
     if (!activeFilters) return
-    let results = [...stays]
+    let results = [...rooms]
 
     // property filter from route param
     if (property) results = results.filter(stay => stay.property === property)
+    
+    // Search params filter from header form
+    if(searchParams && searchParams.destination) {
+      results = results.filter(stay => 
+        stay.location && stay.location.toLowerCase().includes(searchParams.destination.toLowerCase())
+      )
+    }
 
     // room type filters
     const roomFilters = []
@@ -61,14 +78,75 @@ function Stays() {
     if (activeFilters.newestFirst) results = results.reverse()
 
     setFilterStay(results)
-  }, [activeFilters, stays, property])
+  }, [activeFilters, rooms, property, searchParams])
 
   return (
     <div>
       <AllStaysHeader onFiltersChange={setActiveFilters} />
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div className='w-full px-4 sm:px-6 lg:px-8'>
+        
+        {/* Search Results Info */}
+        {searchParams && searchParams.destination && (
+          <div className='pt-6 pb-2'>
+            <div className='bg-primary/10 border border-primary/20 rounded-lg p-4 flex items-start justify-between'>
+              <div className='flex-1'>
+                <h3 className='text-lg font-semibold text-gray-800 mb-2'>Search Results</h3>
+                <div className='flex flex-wrap gap-3 text-sm text-gray-600'>
+                  {searchParams.destination && (
+                    <div className='flex items-center gap-2'>
+                      <img src={assets.locationIcon} alt="location" className='w-4 h-4' />
+                      <span><strong>Destination:</strong> {searchParams.destination}</span>
+                    </div>
+                  )}
+                  {searchParams.checkIn && (
+                    <div className='flex items-center gap-2'>
+                      <img src={assets.calenderIcon} alt="check-in" className='w-4 h-4' />
+                      <span><strong>Check-in:</strong> {new Date(searchParams.checkIn).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                  {searchParams.checkOut && (
+                    <div className='flex items-center gap-2'>
+                      <img src={assets.calenderIcon} alt="check-out" className='w-4 h-4' />
+                      <span><strong>Check-out:</strong> {new Date(searchParams.checkOut).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                  {searchParams.guests && (
+                    <div className='flex items-center gap-2'>
+                      <img src={assets.guestsIcon} alt="guests" className='w-4 h-4' />
+                      <span><strong>Guests:</strong> {searchParams.guests}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <button 
+                onClick={() => setSearchParams({ destination: '', checkIn: '', checkOut: '', guests: 1 })}
+                className='text-sm text-gray-600 hover:text-gray-800 underline ml-4'
+              >
+                Clear
+              </button>
+            </div>
+            <p className='text-gray-600 mt-3'>Found <strong>{filterStay.length}</strong> {filterStay.length === 1 ? 'property' : 'properties'}</p>
+          </div>
+        )}
+        
         <div className='pt-10 pb-10 flex flex-col gap-6'>
-          {
+          {filterStay.length === 0 ? (
+            <div className='text-center py-20'>
+              <div className='flex flex-col items-center gap-4'>
+                <img src={assets.searchIcon} alt="no results" className='w-20 h-20 opacity-30' />
+                <h3 className='text-2xl font-semibold text-gray-700'>No properties found</h3>
+                <p className='text-gray-500'>Try adjusting your search or filters</p>
+                {searchParams && searchParams.destination && (
+                  <button 
+                    onClick={() => setSearchParams({ destination: '', checkIn: '', checkOut: '', guests: 1 })}
+                    className='mt-4 bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition-all'
+                  >
+                    Clear Search
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
             filterStay.map((item, index) => (
               <React.Fragment key={index}>
                 <div className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-300'>
@@ -106,12 +184,31 @@ function Stays() {
                     <div className='mb-4'>
                       <p className='text-sm font-semibold text-gray-700 mb-2'>Amenities:</p>
                       <div className='flex flex-wrap gap-3'>
-                        {item.amenities.map((amenity, idx) => (
-                          <div key={idx} className='flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md'>
-                            <img src={facilityIcons[amenity]} alt={amenity} className='w-4 h-4' />
-                            <span className='text-sm text-gray-700'>{amenity}</span>
-                          </div>
-                        ))}
+                        {(() => {
+                          // Parse amenities - handle both string and array formats
+                          let amenitiesList = []
+                          
+                          if (typeof item.amenities === 'string') {
+                            try {
+                              // Try parsing as JSON first
+                              amenitiesList = JSON.parse(item.amenities)
+                            } catch (error) {
+                              // If JSON parse fails, try splitting by comma
+                              amenitiesList = item.amenities.split(',').map(a => a.trim()).filter(a => a)
+                            }
+                          } else if (Array.isArray(item.amenities)) {
+                            amenitiesList = item.amenities
+                          }
+                          
+                          return amenitiesList.map((amenity, idx) => (
+                            <div key={idx} className='flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-md'>
+                              {facilityIcons[amenity] && (
+                                <img src={facilityIcons[amenity]} alt={amenity} className='w-4 h-4' />
+                              )}
+                              <span className='text-sm text-gray-700'>{amenity}</span>
+                            </div>
+                          ))
+                        })()}
                       </div>
                     </div>
                   </div>
@@ -134,7 +231,7 @@ function Stays() {
               )}
             </React.Fragment>
             ))
-          }
+          )}
         </div>
       </div>
     </div>

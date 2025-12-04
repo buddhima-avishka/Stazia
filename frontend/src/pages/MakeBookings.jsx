@@ -158,7 +158,7 @@ function MakeBookings() {
 
       {/* Room Details */}
       {room && typeof room === 'object' ? (
-        <div className='px-6 md:px-16 lg:px-24 xl:px-32 py-10'>
+        <div className='w-full px-4 sm:px-6 lg:px-8 py-10'>
 
           {/* Image Gallery */}
           <div className='mb-8 flex flex-col items-center space-y-4'>
@@ -222,18 +222,35 @@ function MakeBookings() {
           </div>
 
           {/* Amenities Section */}
-          {room.amenities && (Array.isArray(room.amenities) ? room.amenities.length > 0 : room.amenities) && (
+          {room.amenities && (
             <div className='mb-8'>
               <h2 className='text-2xl font-semibold text-gray-800 mb-4'>Amenities</h2>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                {(Array.isArray(room.amenities) ? room.amenities : (room.amenities?.split(',').map(a => a.trim()) || [])).map((amenity, index) => (
-                  <div key={index} className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'>
-                    {facilityIcons[amenity] && (
-                      <img src={facilityIcons[amenity]} alt={amenity} className='w-6 h-6' />
-                    )}
-                    <span className='text-gray-700 font-medium'>{amenity}</span>
-                  </div>
-                ))}
+                {(() => {
+                  // Parse amenities - handle both string and array formats
+                  let amenitiesList = []
+                  
+                  if (typeof room.amenities === 'string') {
+                    try {
+                      // Try parsing as JSON first
+                      amenitiesList = JSON.parse(room.amenities)
+                    } catch (error) {
+                      // If JSON parse fails, try splitting by comma
+                      amenitiesList = room.amenities.split(',').map(a => a.trim()).filter(a => a)
+                    }
+                  } else if (Array.isArray(room.amenities)) {
+                    amenitiesList = room.amenities
+                  }
+                  
+                  return amenitiesList.map((amenity, index) => (
+                    <div key={index} className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'>
+                      {facilityIcons[amenity] && (
+                        <img src={facilityIcons[amenity]} alt={amenity} className='w-6 h-6' />
+                      )}
+                      <span className='text-gray-700 font-medium'>{amenity}</span>
+                    </div>
+                  ))
+                })()}
               </div>
             </div>
           )}
@@ -367,7 +384,7 @@ function MakeBookings() {
           </div>
         </div>
       ) : (
-        <div className='px-6 md:px-16 lg:px-24 xl:px-32 py-10'>
+        <div className='w-full px-4 sm:px-6 lg:px-8 py-10'>
           <p className='text-center text-gray-600'>Loading room details...</p>
         </div>
       )}

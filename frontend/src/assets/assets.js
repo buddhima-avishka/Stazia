@@ -148,7 +148,7 @@ export const assets = {
   regImage,
 };
 
-export const cities = ["Kandy", "Galle", "Matara", "Colombo"];
+export const cities = ['Matara', 'Galle', 'Hambantota', 'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Badulla', 'Monaragala', 'Jaffna', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Kilinochchi',  'Trincomalee', 'Batticaloa', 'Ampara', 'Anuradhapura', 'Polonnaruwa', 'Kurunegala', 'Puttalam', 'Ratnapura', 'Kegalle'];
 
 // Facility Icon
 export const facilityIcons = {
@@ -157,6 +157,20 @@ export const facilityIcons = {
   "Room Service": assets.roomServiceIcon,
   "Mountain View": assets.mountainIcon,
   "Pool Access": assets.poolIcon,
+  "Swimming Pool": assets.poolIcon,
+  Spa: assets.heartIcon,
+  Gym: assets.badgeIcon,
+  Restaurant: assets.freeBreakfastIcon,
+  Bar: assets.roomServiceIcon,
+  Parking: assets.locationFilledIcon,
+  "Air Conditioning": assets.homeIcon,
+  TV: assets.info_icon,
+  "Mini Bar": assets.roomServiceIcon,
+  "Laundry Service": assets.roomServiceIcon,
+  "Beach Access": assets.mountainIcon,
+  Balcony: assets.homeIcon,
+  Kitchen: assets.freeBreakfastIcon,
+  Jacuzzi: assets.poolIcon,
 };
 
 // For Room Details Page
@@ -185,23 +199,23 @@ export const roomCommonData = [
 
 export const propertyType = [
   {
-    property: "Hotels",
+    property: "Hotel",
     image: hotels,
   },
   {
-    property: "Apartments",
+    property: "Apartment",
     image: apartments,
   },
   {
-    property: "Resorts",
+    property: "Resort",
     image: resorts,
   },
   {
-    property: "Villas",
+    property: "Villa",
     image: villas,
   },
   {
-    property: "Cottages",
+    property: "Cottage",
     image: cottages,
   },
 ];

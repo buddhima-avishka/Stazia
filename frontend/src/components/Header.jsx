@@ -1,9 +1,39 @@
 import React from 'react'
 import { assets } from '../assets/assets.js'
 import { cities } from '../assets/assets'
+import { useContext } from 'react'
+import { AppContext } from '../context/AppContext'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
   const [showForm, setShowForm] = React.useState(false)
+  const { setSearchParams } = useContext(AppContext)
+  const navigate = useNavigate()
+  
+  const [formData, setFormData] = React.useState({
+    destination: '',
+    checkIn: '',
+    checkOut: '',
+    guests: 1
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // Update search params in context
+    setSearchParams(formData)
+    // Navigate to stays page
+    navigate('/stays')
+    // Scroll to top
+    window.scrollTo(0, 0)
+  }
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }))
+  }
 
   return (
     <div 
@@ -49,7 +79,7 @@ function Header() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
                     </svg>
-                    <p className="text-gray-600 font-medium ml-2">5.0</p>
+                    <p className="text-gray-800 font-medium ml-2">5.0</p>
                 </div>
                 <p className="text-sm text-white">Trusted by <span className="font-medium text-gray-800">100,000+</span> users</p>
             </div>
@@ -66,14 +96,23 @@ function Header() {
         </button>
 
         {/* Booking Form */}
-        <form className={`bg-white text-gray-500 rounded-lg px-5 sm:px-4 md:px-5 py-4 sm:py-3 md:py-4 flex flex-col md:flex-row max-md:items-start gap-4 sm:gap-3 md:gap-4 max-md:w-full ${showForm ? 'block' : 'hidden md:flex'}`}>
+        <form onSubmit={handleSubmit} className={`bg-white text-gray-500 rounded-lg px-5 sm:px-4 md:px-5 py-4 sm:py-3 md:py-4 flex flex-col md:flex-row max-md:items-start gap-4 sm:gap-3 md:gap-4 max-md:w-full ${showForm ? 'block' : 'hidden md:flex'}`}>
 
             <div className='w-full sm:w-auto'>
                 <div className='flex items-center gap-2 sm:gap-1.5 md:gap-2'>
                     <img src={assets.locationIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
-                    <label htmlFor="destinationInput" className='text-sm sm:text-xs md:text-sm'>Destination</label>
+                    <label htmlFor="destination" className='text-sm sm:text-xs md:text-sm'>Destination</label>
                 </div>
-                <input list='destinations' id="destinationInput" type="text" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" placeholder="Type here" required />
+                <input 
+                  list='destinations' 
+                  id="destination" 
+                  type="text" 
+                  className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" 
+                  placeholder="Type here" 
+                  value={formData.destination}
+                  onChange={handleInputChange}
+                  required 
+                />
                 <datalist id='destinations'>
                   {cities.map((city, index)=>(
                     <option value={city} key={index} />
@@ -86,7 +125,13 @@ function Header() {
                     <img src={assets.calenderIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
                     <label htmlFor="checkIn" className='text-sm sm:text-xs md:text-sm'>Check in</label>
                 </div>
-                <input id="checkIn" type="date" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" />
+                <input 
+                  id="checkIn" 
+                  type="date" 
+                  className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" 
+                  value={formData.checkIn}
+                  onChange={handleInputChange}
+                />
             </div>
 
             <div className='w-full sm:w-auto'>
@@ -94,7 +139,13 @@ function Header() {
                     <img src={assets.calenderIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
                     <label htmlFor="checkOut" className='text-sm sm:text-xs md:text-sm'>Check out</label>
                 </div>
-                <input id="checkOut" type="date" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" />
+                <input 
+                  id="checkOut" 
+                  type="date" 
+                  className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-full md:w-32 lg:w-36" 
+                  value={formData.checkOut}
+                  onChange={handleInputChange}
+                />
             </div>
 
             <div className='flex md:flex-col max-md:gap-2 max-md:items-center w-full sm:w-auto'>
@@ -102,11 +153,20 @@ function Header() {
                     <img src={assets.guestsIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
                     <label htmlFor="guests" className='text-sm sm:text-xs md:text-sm'>Guests</label>
                 </div>
-                <input min={1} max={4} id="guests" type="number" className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-20 sm:w-16 md:w-20" placeholder="0" />
+                <input 
+                  min={1} 
+                  max={4} 
+                  id="guests" 
+                  type="number" 
+                  className="rounded border border-gray-200 px-3 sm:px-2 md:px-3 py-2 sm:py-1 md:py-2 mt-1.5 sm:mt-1 md:mt-1.5 text-sm sm:text-xs md:text-sm outline-none w-20 sm:w-16 md:w-20" 
+                  placeholder="0" 
+                  value={formData.guests}
+                  onChange={handleInputChange}
+                />
             </div>
 
             <div className='flex items-center md:ml-2 lg:ml-3 w-full sm:w-auto'>
-                <button className='flex items-center justify-center gap-2 sm:gap-1.5 md:gap-2 rounded-md bg-primary py-2.5 sm:py-1.5 md:py-2.5 px-5 sm:px-4 md:px-5 text-white cursor-pointer w-full hover:bg-primary/90 transition-all text-sm sm:text-xs md:text-sm' >
+                <button type="submit" className='flex items-center justify-center gap-2 sm:gap-1.5 md:gap-2 rounded-md bg-primary py-2.5 sm:py-1.5 md:py-2.5 px-5 sm:px-4 md:px-5 text-white cursor-pointer w-full hover:bg-primary/90 transition-all text-sm sm:text-xs md:text-sm' >
                     <img src={assets.searchIcon} alt="" className='w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5' />
                     <span>Search</span>
                 </button>

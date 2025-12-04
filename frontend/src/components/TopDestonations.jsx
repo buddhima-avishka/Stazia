@@ -9,6 +9,13 @@ function TopDestonations() {
 
   const [stopScroll, setStopScroll] = React.useState(false);
 
+  // Get top 5 highest rated hotels
+  const topRatedRooms = React.useMemo(() => {
+    return [...rooms]
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 5);
+  }, [rooms]);
+
   return (
     <>
       <style>{`
@@ -27,11 +34,11 @@ function TopDestonations() {
                 }
             `}</style>
 
-    <div className='flex flex-col items-center py-10' id='topDestinations'>
+    <div className='flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8' id='topDestinations'>
       <h1 className='text-3xl md:text-4xl lg:text-5xl text-gray-500 pb-5 font-semibold leading-tight md:leading-tight lg:leading-tight'>Top Destinations</h1>
-      <p className='text-sm md:text-base text-gray-500 pb-5 text-center px-4'>Discover our handpicked selection of exceptional properties around the <br className="hidden md:block" /> world, offering unparalleled luxury and unforgettable experiences.</p>
+      <p className='text-sm md:text-base text-gray-500 pb-5 mb-10 text-center'>Discover our handpicked selection of exceptional properties around the world, offering unparalleled luxury and unforgettable experiences.</p>
       
-      {rooms.length === 0 ? (
+      {topRatedRooms.length === 0 ? (
         <div className="w-full py-10 text-center">
           <p className="text-gray-500">No rooms available at the moment. Please check back later.</p>
         </div>
@@ -39,9 +46,9 @@ function TopDestonations() {
         <div className="w-full overflow-hidden relative" onMouseEnter={() => setStopScroll(true)} onMouseLeave={() => setStopScroll(false)}>
           <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent" />
           
-          <div className="marquee-inner flex w-fit" style={{ animationPlayState: stopScroll ? "paused" : "running", animationDuration: rooms.length * 2500 + "ms" }}>
+          <div className="marquee-inner flex w-fit" style={{ animationPlayState: stopScroll ? "paused" : "running", animationDuration: topRatedRooms.length * 2500 + "ms" }}>
             <div className="flex">
-              {[...rooms, ...rooms].map((item, index) => (
+              {[...topRatedRooms, ...topRatedRooms].map((item, index) => (
                 <div key={index} className='w-56 mx-4 h-[20rem] relative group hover:scale-90 transition-all duration-300 rounded-lg overflow-hidden bg-gray-200'>
                   <img src={item.image} alt={item.name} className='w-full h-full object-cover'/>
                   <p className="absolute top-2 left-2 text-black text-sm font-semibold px-2 py-1 bg-white rounded">{item.rating}</p>

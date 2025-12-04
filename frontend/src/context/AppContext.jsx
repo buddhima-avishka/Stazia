@@ -11,6 +11,12 @@ const AppContextProvider = (props) => {
   const [rooms,setRooms] = useState([])
   const [token,setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
   const [userData,setUserData] = useState(false)
+  const [searchParams,setSearchParams] = useState({
+    destination: '',
+    checkIn: '',
+    checkOut: '',
+    guests: 1
+  })
 
   const getRoomsData = async () => {
     try {
@@ -65,7 +71,8 @@ const AppContextProvider = (props) => {
     getRoomsData,
     token,setToken,
     userData,setUserData,
-    loadUserProfileData
+    loadUserProfileData,
+    searchParams,setSearchParams
   }
 
   return (
