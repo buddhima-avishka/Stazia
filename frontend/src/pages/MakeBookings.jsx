@@ -153,7 +153,7 @@ function MakeBookings() {
   const today = new Date().toISOString().split('T')[0]
 
   return (
-    <div>
+    <div className='pt-20'>
       {/* <MakeBookingsHeader/> */}
 
       {/* Room Details */}

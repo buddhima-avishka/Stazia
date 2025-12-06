@@ -54,7 +54,7 @@ function Login() {
   return (
     <div
       onSubmit={onSubmitHandler}
-      className="flex h-[700px] w-80% mt-10 mb-10 overflow-hidden rounded-lg"
+      className="flex h-[700px] w-80% overflow-hidden h-screen"
       style={{
         backgroundImage: `url(${assets.regImage})`,
         backgroundSize: "cover",
@@ -64,8 +64,8 @@ function Login() {
     >
       <div className="w-full hidden md:inline-block relative">
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-          <img className="h-12" src={assets.logo} alt="logo" />
-          <p className="text-l font-bold text-primary mt-1">Stazia</p>
+          {/* <img className="h-12" src={assets.logo} alt="logo" />
+          <p className="text-l font-bold text-primary mt-1">Stazia</p> */}
         </div>
       </div>
 

@@ -9,3 +9,69 @@
 ::-webkit-scrollbar {
   @apply hidden;
 }
+
+@font-face {
+  font-family: 'Melodin';
+  src: url('./assets/Fonts/Melodin.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.melodin {
+  font-family: 'Melodin', sans-serif;
+}
+
+@font-face {
+  font-family: 'Dolce';
+  src: url('./assets/Fonts/Dolce.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.dolce {
+  font-family: 'Dolce', sans-serif;
+}
+
+@font-face {
+  font-family: 'AgokaFamily';
+  src: url('./assets/Fonts/AgokaFamily.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.agoka {
+  font-family: 'AgokaFamily', sans-serif;
+}
+
+@font-face {
+  font-family: 'SpazielSerifRound';
+  src: url('./assets/Fonts/SpazielSerifRound.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.spezielserif {
+  font-family: 'SpazielSerifRound', sans-serif;
+}
+ 
+@font-face {
+  font-family: 'Techovier';
+  src: url('./assets/Fonts/Techovier\ .ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.techovier {
+  font-family: 'Techovier', sans-serif;
+}
+
+@font-face {
+  font-family: 'Soligant';
+  src: url('./assets/Fonts/Soligant.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.soligant {
+  font-family: 'Soligant', sans-serif;
+}

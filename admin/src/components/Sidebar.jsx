@@ -11,7 +11,7 @@ function Sidebar() {
   const {hToken} = useContext(HotelContext)
 
   return (
-    <div className='min-h-screen bg-white border-r' style={{borderColor: '#C49C74'}}>
+    <div className='h-screen sticky top-0 bg-white border-r overflow-y-auto' style={{borderColor: '#C49C74'}}>
       {
         aToken && <ul className='text-[#515151] mt-5 '>
 
@@ -28,7 +28,7 @@ function Sidebar() {
           <p>Add Room</p>
         </NavLink>
         <NavLink className={({isActive})=> `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#FFF8F3] border-r-4 ' : ''}`} to={'/rooms-list'} style={({isActive}) => isActive ? {borderColor: '#C49C74'} : {}}>
-          <img src={assets.list_icon} alt="" />
+          <img src={assets.check_list} alt="" className='w-6 h-6' />
           <p>List Room</p>
         </NavLink>
       </ul>

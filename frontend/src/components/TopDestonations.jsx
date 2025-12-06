@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import { assets } from '../assets/assets';
 
 function TopDestonations() {
 
@@ -35,8 +36,8 @@ function TopDestonations() {
             `}</style>
 
     <div className='flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8' id='topDestinations'>
-      <h1 className='text-3xl md:text-4xl lg:text-5xl text-gray-500 pb-5 font-semibold leading-tight md:leading-tight lg:leading-tight'>Top Destinations</h1>
-      <p className='text-sm md:text-base text-gray-500 pb-5 mb-10 text-center'>Discover our handpicked selection of exceptional properties around the world, offering unparalleled luxury and unforgettable experiences.</p>
+      <h1 className='melodin text-3xl md:text-4xl lg:text-5xl text-gray-500 pb-5 font-semibold leading-tight md:leading-tight lg:leading-tight'>Top Destinations</h1>
+      <p className='soligant text-sm md:text-base text-gray-500 pb-5 mb-10 text-center'>Discover Sri Lanka’s most popular travel destinations and choose from a wide range of hotels designed for every type of traveler.</p>
       
       {topRatedRooms.length === 0 ? (
         <div className="w-full py-10 text-center">
@@ -51,7 +52,10 @@ function TopDestonations() {
               {[...topRatedRooms, ...topRatedRooms].map((item, index) => (
                 <div key={index} className='w-56 mx-4 h-[20rem] relative group hover:scale-90 transition-all duration-300 rounded-lg overflow-hidden bg-gray-200'>
                   <img src={item.image} alt={item.name} className='w-full h-full object-cover'/>
-                  <p className="absolute top-2 left-2 text-black text-sm font-semibold px-2 py-1 bg-white rounded">{item.rating}</p>
+                  <div className="absolute top-2 left-2 text-black text-sm font-semibold px-2 py-1 bg-white rounded flex items-center gap-1">
+                    <img src={assets.starIconFilled} alt="star" className='w-4 h-4' />
+                    <span>{item.rating}</span>
+                  </div>
                   <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
                     <p className="text-white text-sm font-semibold">{item.name}</p>
                     <p className="text-white text-xs">{item.location}</p>

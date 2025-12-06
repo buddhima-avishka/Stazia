@@ -49,11 +49,11 @@ function Header() {
       <div className='absolute inset-0 bg-black/30'></div>
 
       {/* ----left side - top left corner---- */}
-      <div className='absolute top-0 left-0 z-10 max-w-xl flex flex-col items-start justify-start gap-4 p-6 md:p-10 lg:p-12 pt-28 md:pt-32 lg:pt-36'>
-        <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
-          Explore your place <br />to stay
+      <div className='absolute top-0 left-0 z-10 max-w-2xl flex flex-col items-start justify-start gap-4 p-6 md:p-10 lg:p-12 pt-28 md:pt-32 lg:pt-36'>
+        <p className='dolce text-4xl md:text-5xl lg:text-6xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
+          Where Every Stay <br /> Feels Like Home.
         </p>
-        <p className='text-white text-sm md:text-base'>Discover the finest hotels from all over the world.</p>
+        <p className='soligant text-white text-sm md:text-base'>Your gateway to Sri Lanka's finest hotels, resorts, and hidden escapes.</p>
 
         <div className="flex items-center divide-x divide-gray-300">
             <div className="flex -space-x-3 pr-3">
@@ -178,10 +178,10 @@ function Header() {
       {/* right side - bottom right corner - hidden on mobile */}
       <div className='hidden sm:flex absolute bottom-0 right-0 z-10 max-w-md flex-col justify-end gap-3 p-6 md:p-10 lg:p-12'>
         <div className='border-l-4 border-primary pl-4 md:pl-6'>
-          <p className='text-base md:text-lg text-white'>
+          <p className='soligant text-base md:text-lg text-white'>
             We provide a variety of the best <br /> lodging accommodations for those <br /> of you who need it.
           </p>
-          <p className='text-sm md:text-base text-white/90'>Don't worry about the quality of the service.</p>
+          <p className='soligant text-sm md:text-base text-white/90'>Don't worry about the quality of the service.</p>
         </div>
       </div>
 

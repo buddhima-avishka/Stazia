@@ -41,9 +41,14 @@ function MyProfile() {
     }
   }
 
+  React.useEffect(() => {
+    // Trigger a small scroll to activate navbar background
+    window.scrollTo(0, 1);
+  }, []);
+
   return userData && (
-    <div className='max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12'>
-      <div className='flex flex-col gap-2 text-sm mt-12'>
+    <div className='max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pt-24 sm:pt-28'>
+      <div className='flex flex-col gap-2 text-sm mt-4 sm:mt-8'>
 
       {
         isEdit

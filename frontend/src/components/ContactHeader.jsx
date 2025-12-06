@@ -4,9 +4,9 @@ import { assets } from '../assets/assets'
 function ContactHeader() {
   return (
     <div 
-              className='relative rounded-lg overflow-hidden min-h-[500px] md:min-h-[600px]'
+              className='relative overflow-hidden min-h-[500px] md:min-h-[600px]'
               style={{
-                backgroundImage: `url(${assets.header_img})`,
+                backgroundImage: `url(${assets.contactusHeader_img})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
@@ -16,11 +16,11 @@ function ContactHeader() {
               <div className='absolute inset-0 bg-black/30'></div>
         
               {/* ----left side - top left corner---- */}
-              <div className='absolute top-0 left-0 z-10 max-w-xl flex flex-col items-start justify-start gap-4 p-6 md:p-10 lg:p-12'>
-                <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
+              <div className='absolute top-0 left-0 z-10 max-w-3xl flex flex-col items-start justify-start gap-4 p-6 md:p-10 lg:p-12 mt-12'>
+                <p className='dolce text-5xl md:text-6xl lg:text-8xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight pt-12'>
                   Contact Us
                 </p>
-                <p className='text-white text-sm md:text-base'>We’re here to help you every step of the way — from finding the perfect hotel to managing your bookings with ease. <br /> If you have any questions, feedback, or need support, feel free to reach out to us through any of the channels below.</p>
+                <p className='soligant text-white text-sm md:text-base'>We're here to help you every step of the way — from finding the perfect hotel to managing your bookings with ease. If you have any questions, feedback, or need support, feel free to reach out to us through any of the channels below.</p>
                 
               </div>
     </div>

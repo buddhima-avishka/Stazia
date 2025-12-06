@@ -14,6 +14,7 @@ import upload_area from "./upload_area.svg";
 
 // PNG Images
 import logo from "./logo.png";
+import check_list from "./checklist.png"
 
 // Export all assets
 export const assets = {
@@ -33,6 +34,7 @@ export const assets = {
 
   // PNG Images
   logo,
+  check_list
 };
 
 export default assets;

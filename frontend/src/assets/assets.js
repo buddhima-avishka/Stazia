@@ -40,10 +40,10 @@ import upload_area from "./upload_area.svg";
 import verified_icon from "./verified_icon.svg";
 
 // PNG Images
-import apartments from "./apartments.png";
-import cottages from "./cottages.png";
+import apartments from "./apartments.jpg";
+import cottages from "./cottages.jpg";
 import cross_icon from "./cross_icon.png";
-import header_img from "./image header.png";
+import header_img from "./image header.jpg";
 import hotel1 from "./hotel1.png";
 import hotel2 from "./hotel2.png";
 import hotel3 from "./hotel3.png";
@@ -51,11 +51,11 @@ import hotel4 from "./hotel4.png";
 import hotel5 from "./hotel5.png";
 import hotel6 from "./hotel6.png";
 import hotel7 from "./hotel7.png";
-import hotels from "./hotels.png";
+import hotels from "./hotels.jpg";
 import logo from "./logo.png";
 import profile_pic from "./profile_pic.png";
 import razorpay_logo from "./razorpay_logo.png";
-import resorts from "./resorts.png";
+import resorts from "./resorts.jpg";
 import room1 from "./room1.png";
 import room2 from "./room2.png";
 import room3 from "./room3.png";
@@ -69,8 +69,11 @@ import topHotel2 from "./topHotel2.png";
 import topHotel3 from "./topHotel3.png";
 import upload_area_png from "./upload_area.png";
 import upload_icon from "./upload_icon.png";
-import villas from "./villas.png";
+import villas from "./villas.jpg";
 import regImage from "./regImage.jpg";
+import aboutUsHeader_img from "./aboutus_header_img.jpg";
+import contactusHeader_img from "./contactus_header_img.jpg";
+import allstaysHeader_img from "./allstays_header_img.jpg"
 
 export const assets = {
   // Icons
@@ -146,6 +149,9 @@ export const assets = {
   upload_icon,
   villas,
   regImage,
+  aboutUsHeader_img,
+  contactusHeader_img,
+  allstaysHeader_img
 };
 
 export const cities = ['Matara', 'Galle', 'Hambantota', 'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Badulla', 'Monaragala', 'Jaffna', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Kilinochchi',  'Trincomalee', 'Batticaloa', 'Ampara', 'Anuradhapura', 'Polonnaruwa', 'Kurunegala', 'Puttalam', 'Ratnapura', 'Kegalle'];
