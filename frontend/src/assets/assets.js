@@ -73,7 +73,8 @@ import villas from "./villas.jpg";
 import regImage from "./regImage.jpg";
 import aboutUsHeader_img from "./aboutus_header_img.jpg";
 import contactusHeader_img from "./contactus_header_img.jpg";
-import allstaysHeader_img from "./allstays_header_img.jpg"
+import allstaysHeader_img from "./allstays_header_img.jpg";
+import mybookingsHeader_img from "./mybookings_header_img.jpg";
 
 export const assets = {
   // Icons
@@ -151,7 +152,8 @@ export const assets = {
   regImage,
   aboutUsHeader_img,
   contactusHeader_img,
-  allstaysHeader_img
+  allstaysHeader_img,
+  mybookingsHeader_img
 };
 
 export const cities = ['Matara', 'Galle', 'Hambantota', 'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Badulla', 'Monaragala', 'Jaffna', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Kilinochchi',  'Trincomalee', 'Batticaloa', 'Ampara', 'Anuradhapura', 'Polonnaruwa', 'Kurunegala', 'Puttalam', 'Ratnapura', 'Kegalle'];

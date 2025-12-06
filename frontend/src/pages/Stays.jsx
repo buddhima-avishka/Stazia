@@ -15,6 +15,11 @@ function Stays() {
   const {rooms, searchParams, setSearchParams} = useContext(AppContext)
   const navigate = useNavigate() 
 
+  // Scroll to top when component mounts or property changes
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [property])
+
   const applyFilter = () => {
     let results = [...rooms]
     
